@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { api } from '@/lib/api';
-import { FaUser, FaEnvelope, FaPhone, FaBuilding, FaCalendar } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaBuilding, FaCalendar, FaTimes, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function ClientsPage() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchClients();
@@ -30,6 +32,11 @@ export default function ClientsPage() {
     client.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     client.company?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const viewClientDetails = (client: any) => {
+    setSelectedClient(client);
+    setShowModal(true);
+  };
 
   return (
     <AdminLayout>
@@ -101,7 +108,10 @@ export default function ClientsPage() {
                   </div>
 
                   <div className="pt-4 border-t">
-                    <button className="w-full btn-primary text-sm">
+                    <button 
+                      onClick={() => viewClientDetails(client)}
+                      className="w-full btn-primary text-sm"
+                    >
                       View Details
                     </button>
                   </div>
@@ -132,6 +142,159 @@ export default function ClientsPage() {
             </div>
           </div>
         </div>
+
+        {/* Client Details Modal */}
+        {showModal && selectedClient && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 rounded-t-lg">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h2 className="text-3xl font-bold mb-2">{selectedClient.name}</h2>
+                    {selectedClient.company && (
+                      <p className="text-primary-100 flex items-center gap-2">
+                        <FaBuilding /> {selectedClient.company}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="text-white hover:text-gray-200"
+                  >
+                    <FaTimes size={24} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                {/* Contact Information */}
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Contact Information</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <FaEnvelope className="text-primary-600 flex-shrink-0" size={20} />
+                      <div>
+                        <p className="text-xs text-gray-500 uppercase">Email</p>
+                        <p className="font-medium text-gray-900">{selectedClient.email}</p>
+                      </div>
+                    </div>
+                    
+                    {selectedClient.phone && (
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <FaPhone className="text-primary-600 flex-shrink-0" size={20} />
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase">Phone</p>
+                          <p className="font-medium text-gray-900">{selectedClient.phone}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Company & Address */}
+                {(selectedClient.company || selectedClient.address) && (
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Company Details</h3>
+                    <div className="space-y-3">
+                      {selectedClient.company && (
+                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                          <FaBuilding className="text-primary-600 flex-shrink-0" size={20} />
+                          <div>
+                            <p className="text-xs text-gray-500 uppercase">Company Name</p>
+                            <p className="font-medium text-gray-900">{selectedClient.company}</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {selectedClient.address && (
+                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                          <FaMapMarkerAlt className="text-primary-600 flex-shrink-0 mt-1" size={20} />
+                          <div>
+                            <p className="text-xs text-gray-500 uppercase">Address</p>
+                            <p className="font-medium text-gray-900">{selectedClient.address}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Account Information */}
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Account Information</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Member Since</p>
+                      <p className="font-medium text-gray-900 flex items-center gap-2">
+                        <FaCalendar className="text-primary-600" />
+                        {new Date(selectedClient.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                    
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Account Status</p>
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                        selectedClient.isActive !== false 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {selectedClient.isActive !== false ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Email Verified</p>
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                        selectedClient.emailVerified 
+                          ? 'bg-blue-100 text-blue-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {selectedClient.emailVerified ? 'Verified' : 'Not Verified'}
+                      </span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <p className="text-xs text-gray-500 uppercase mb-1">Role</p>
+                      <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 capitalize">
+                        {selectedClient.role || 'Client'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Information */}
+                {selectedClient.notes && (
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Notes</h3>
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-gray-700 whitespace-pre-wrap">{selectedClient.notes}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4 border-t">
+                  <a
+                    href={`mailto:${selectedClient.email}`}
+                    className="flex-1 btn-primary text-center"
+                  >
+                    Send Email
+                  </a>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="flex-1 btn-secondary"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

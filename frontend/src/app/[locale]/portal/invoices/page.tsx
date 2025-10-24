@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import CustomerLayout from '@/components/portal/CustomerLayout';
 import { FiDownload, FiEye, FiFilter } from 'react-icons/fi';
 import { api } from '@/lib/api';
 
 interface InvoicesPageProps {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 export default function InvoicesPage({ params }: InvoicesPageProps) {
+  const { locale } = use(params);
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -62,7 +63,7 @@ export default function InvoicesPage({ params }: InvoicesPageProps) {
   };
 
   return (
-    <CustomerLayout locale={params.locale}>
+    <CustomerLayout locale={locale}>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">My Invoices</h1>
@@ -144,7 +145,7 @@ export default function InvoicesPage({ params }: InvoicesPageProps) {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex space-x-2">
                           <button
-                            onClick={() => window.open(`/${params.locale}/portal/invoices/${invoice._id}`, '_blank')}
+                            onClick={() => window.open(`/${locale}/portal/invoices/${invoice._id}`, '_blank')}
                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                             title="View Invoice"
                           >

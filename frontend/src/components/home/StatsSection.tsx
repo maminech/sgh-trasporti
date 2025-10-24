@@ -2,13 +2,16 @@
 
 import { motion } from 'framer-motion';
 import { FaTruck, FaMapMarkerAlt, FaUsers, FaAward } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function StatsSection() {
+  const t = useTranslations('home.stats');
+  
   const stats = [
-    { icon: FaTruck, value: '150+', label: 'Veicoli', color: 'text-blue-600' },
-    { icon: FaMapMarkerAlt, value: '500+', label: 'Destinazioni', color: 'text-green-600' },
-    { icon: FaUsers, value: '2,000+', label: 'Clienti Soddisfatti', color: 'text-purple-600' },
-    { icon: FaAward, value: '25+', label: 'Anni di Esperienza', color: 'text-orange-600' },
+    { icon: FaTruck, value: '150+', label: t('trucks'), color: 'text-blue-600' },
+    { icon: FaMapMarkerAlt, value: '500+', label: t('destinations'), color: 'text-green-600' },
+    { icon: FaUsers, value: '2,000+', label: t('clients'), color: 'text-purple-600' },
+    { icon: FaAward, value: '25+', label: t('experience'), color: 'text-orange-600' },
   ];
 
   return (

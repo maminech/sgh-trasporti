@@ -3,11 +3,26 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { api } from '@/lib/api';
-import { FaTruck, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaTruck, FaEdit, FaTrash, FaPlus, FaTimes } from 'react-icons/fa';
 
 export default function FleetPage() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [editingVehicle, setEditingVehicle] = useState<any>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    type: 'van',
+    licensePlate: '',
+    brand: '',
+    model: '',
+    year: new Date().getFullYear(),
+    capacity: {
+      weight: 0,
+      volume: 0
+    },
+    status: 'available'
+  });
 
   useEffect(() => {
     fetchVehicles();
@@ -21,6 +36,52 @@ export default function FleetPage() {
       console.error('Error fetching vehicles:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const openAddModal = () => {
+    setEditingVehicle(null);
+    setFormData({
+      name: '',
+      type: 'van',
+      licensePlate: '',
+      brand: '',
+      model: '',
+      year: new Date().getFullYear(),
+      capacity: { weight: 0, volume: 0 },
+      status: 'available'
+    });
+    setShowModal(true);
+  };
+
+  const openEditModal = (vehicle: any) => {
+    setEditingVehicle(vehicle);
+    setFormData({
+      name: vehicle.name,
+      type: vehicle.type,
+      licensePlate: vehicle.licensePlate,
+      brand: vehicle.brand,
+      model: vehicle.model,
+      year: vehicle.year,
+      capacity: vehicle.capacity || { weight: 0, volume: 0 },
+      status: vehicle.status
+    });
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (editingVehicle) {
+        await api.fleet.update(editingVehicle._id, formData);
+      } else {
+        await api.fleet.create(formData);
+      }
+      setShowModal(false);
+      fetchVehicles();
+    } catch (error) {
+      console.error('Error saving vehicle:', error);
+      alert('Error saving vehicle. Please try again.');
     }
   };
 
@@ -49,7 +110,7 @@ export default function FleetPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Fleet Management</h1>
-          <button className="btn-primary flex items-center gap-2">
+          <button onClick={openAddModal} className="btn-primary flex items-center gap-2">
             <FaPlus /> Add Vehicle
           </button>
         </div>
@@ -92,7 +153,11 @@ export default function FleetPage() {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Capacity:</span>
-                      <span className="font-semibold">{vehicle.capacity}</span>
+                      <span className="font-semibold">
+                        {vehicle.capacity?.weight ? `${vehicle.capacity.weight} kg` : ''}
+                        {vehicle.capacity?.weight && vehicle.capacity?.volume ? ' / ' : ''}
+                        {vehicle.capacity?.volume ? `${vehicle.capacity.volume} m³` : ''}
+                      </span>
                     </div>
                     {vehicle.pricePerKm && (
                       <div className="flex justify-between text-sm">
@@ -116,7 +181,10 @@ export default function FleetPage() {
                   )}
 
                   <div className="flex gap-2 pt-4 border-t">
-                    <button className="flex-1 btn-secondary flex items-center justify-center gap-2">
+                    <button 
+                      onClick={() => openEditModal(vehicle)}
+                      className="flex-1 btn-secondary flex items-center justify-center gap-2"
+                    >
                       <FaEdit /> Edit
                     </button>
                     <button 
@@ -129,6 +197,155 @@ export default function FleetPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Add/Edit Vehicle Modal */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b flex justify-between items-center">
+                <h2 className="text-2xl font-bold">
+                  {editingVehicle ? 'Edit Vehicle' : 'Add New Vehicle'}
+                </h2>
+                <button onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-700">
+                  <FaTimes size={24} />
+                </button>
+              </div>
+              
+              <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Vehicle Name *</label>
+                    <input
+                      type="text"
+                      required
+                      className="input-field"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Type *</label>
+                    <select
+                      required
+                      className="input-field"
+                      value={formData.type}
+                      onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                    >
+                      <option value="van">Van</option>
+                      <option value="truck">Truck</option>
+                      <option value="semi_truck">Semi Truck</option>
+                      <option value="refrigerated">Refrigerated</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">License Plate *</label>
+                    <input
+                      type="text"
+                      required
+                      className="input-field"
+                      value={formData.licensePlate}
+                      onChange={(e) => setFormData({ ...formData, licensePlate: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Brand *</label>
+                    <input
+                      type="text"
+                      required
+                      className="input-field"
+                      value={formData.brand}
+                      onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Model *</label>
+                    <input
+                      type="text"
+                      required
+                      className="input-field"
+                      value={formData.model}
+                      onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Year *</label>
+                    <input
+                      type="number"
+                      required
+                      min="1990"
+                      max={new Date().getFullYear() + 1}
+                      className="input-field"
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Weight Capacity (kg) *</label>
+                    <input
+                      type="number"
+                      required
+                      min="0"
+                      className="input-field"
+                      value={formData.capacity.weight}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        capacity: { ...formData.capacity, weight: parseInt(e.target.value) }
+                      })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Volume Capacity (m³) *</label>
+                    <input
+                      type="number"
+                      required
+                      min="0"
+                      className="input-field"
+                      value={formData.capacity.volume}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        capacity: { ...formData.capacity, volume: parseInt(e.target.value) }
+                      })}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status *</label>
+                    <select
+                      required
+                      className="input-field"
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                    >
+                      <option value="available">Available</option>
+                      <option value="in-use">In Use</option>
+                      <option value="maintenance">Maintenance</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button type="submit" className="flex-1 btn-primary">
+                    {editingVehicle ? 'Update Vehicle' : 'Add Vehicle'}
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setShowModal(false)} 
+                    className="flex-1 btn-secondary"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>

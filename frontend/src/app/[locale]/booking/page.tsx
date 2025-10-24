@@ -41,8 +41,13 @@ export default function BookingPage() {
       setError('');
       
       try {
-        // Prepare booking data
+        // Prepare booking data matching the backend schema
         const bookingData = {
+          customerInfo: {
+            name: formData.customerName,
+            email: formData.customerEmail,
+            phone: formData.customerPhone,
+          },
           origin: {
             address: formData.pickupAddress,
             city: formData.pickupCity,
@@ -56,19 +61,17 @@ export default function BookingPage() {
             country: 'Italia'
           },
           pickupDate: formData.pickupDate,
-          packageType: formData.packageType,
-          weight: parseInt(formData.weight),
-          dimensions: formData.dimensions ? {
-            length: 100,
-            width: 80,
-            height: 120
-          } : undefined,
-          specialInstructions: formData.specialInstructions,
-          customer: {
-            name: formData.customerName,
-            email: formData.customerEmail,
-            phone: formData.customerPhone
-          }
+          packageDetails: {
+            type: formData.packageType || 'standard',
+            weight: parseInt(formData.weight),
+            description: formData.specialInstructions,
+            dimensions: formData.dimensions ? {
+              length: 100,
+              width: 80,
+              height: 120
+            } : undefined,
+          },
+          notes: formData.specialInstructions
         };
 
         // Submit booking to API

@@ -1,17 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import CustomerLayout from '@/components/portal/CustomerLayout';
 import { FiPackage, FiFileText, FiTruck, FiAlertCircle } from 'react-icons/fi';
 import { api } from '@/lib/api';
 
 interface DashboardProps {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 export default function CustomerDashboard({ params }: DashboardProps) {
-  const t = useTranslations();
+  const { locale } = use(params);
+  const t = useTranslations('portal');
   const [stats, setStats] = useState({
     activeBookings: 0,
     completedBookings: 0,
@@ -76,16 +77,16 @@ export default function CustomerDashboard({ params }: DashboardProps) {
   };
 
   return (
-    <CustomerLayout locale={params.locale}>
+    <CustomerLayout locale={locale}>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900">{t('dashboard')}</h1>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Bookings</p>
+                <p className="text-sm text-gray-600">{t('activeBookings')}</p>
                 <p className="text-3xl font-bold text-blue-600">
                   {loading ? '...' : stats.activeBookings}
                 </p>
@@ -97,7 +98,7 @@ export default function CustomerDashboard({ params }: DashboardProps) {
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Completed</p>
+                <p className="text-sm text-gray-600">{t('completed')}</p>
                 <p className="text-3xl font-bold text-green-600">
                   {loading ? '...' : stats.completedBookings}
                 </p>
@@ -109,7 +110,7 @@ export default function CustomerDashboard({ params }: DashboardProps) {
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pending Invoices</p>
+                <p className="text-sm text-gray-600">{t('pendingInvoices')}</p>
                 <p className="text-3xl font-bold text-orange-600">
                   {loading ? '...' : stats.pendingInvoices}
                 </p>
@@ -121,7 +122,7 @@ export default function CustomerDashboard({ params }: DashboardProps) {
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Spent</p>
+                <p className="text-sm text-gray-600">{t('totalSpent')}</p>
                 <p className="text-3xl font-bold text-purple-600">
                   €{loading ? '...' : stats.totalSpent.toFixed(2)}
                 </p>
@@ -134,7 +135,7 @@ export default function CustomerDashboard({ params }: DashboardProps) {
         {/* Recent Bookings */}
         <div className="bg-white rounded-lg shadow">
           <div className="p-6 border-b">
-            <h2 className="text-xl font-bold text-gray-900">Recent Bookings</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('recentBookings')}</h2>
           </div>
           <div className="overflow-x-auto">
             {loading ? (
@@ -143,26 +144,26 @@ export default function CustomerDashboard({ params }: DashboardProps) {
               </div>
             ) : recentBookings.length === 0 ? (
               <div className="p-6 text-center text-gray-500">
-                No bookings yet. Create your first booking!
+                {t('noBookingsYet')}
               </div>
             ) : (
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Tracking Code
+                      {t('trackingCode')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Route
+                      {t('route')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Status
+                      {t('status')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Pickup Date
+                      {t('pickupDate')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Price
+                      {t('price')}
                     </th>
                   </tr>
                 </thead>
@@ -175,7 +176,7 @@ export default function CustomerDashboard({ params }: DashboardProps) {
                       <td className="px-6 py-4">
                         <div className="text-sm">
                           <div className="font-medium">{booking.origin.city}</div>
-                          <div className="text-gray-500">to {booking.destination.city}</div>
+                          <div className="text-gray-500">{t('to')} {booking.destination.city}</div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -204,21 +205,21 @@ export default function CustomerDashboard({ params }: DashboardProps) {
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <a
-            href={`/${params.locale}/booking`}
+            href={`/${locale}/booking`}
             className="bg-blue-600 text-white p-6 rounded-lg shadow hover:bg-blue-700 transition-colors"
           >
             <FiPackage size={32} className="mb-3" />
-            <h3 className="text-xl font-bold mb-2">New Booking</h3>
-            <p className="text-blue-100">Create a new transport booking</p>
+            <h3 className="text-xl font-bold mb-2">{t('newBooking')}</h3>
+            <p className="text-blue-100">{t('newBookingDesc')}</p>
           </a>
 
           <a
-            href={`/${params.locale}/quote`}
+            href={`/${locale}/quote`}
             className="bg-green-600 text-white p-6 rounded-lg shadow hover:bg-green-700 transition-colors"
           >
             <FiFileText size={32} className="mb-3" />
-            <h3 className="text-xl font-bold mb-2">Get Quote</h3>
-            <p className="text-green-100">Request a price estimate</p>
+            <h3 className="text-xl font-bold mb-2">{t('getQuote')}</h3>
+            <p className="text-green-100">{t('getQuoteDesc')}</p>
           </a>
         </div>
       </div>

@@ -33,34 +33,57 @@
     "home": {
       "hero": {
         "title": "Trasporto Professionale e Affidabile",
-        "subtitle": "Soluzioni di logistica complete per le tue esigenze di trasporto",
+        "subtitle": "Soluzioni di logistica complete per le tue esigenze di trasporto. Tracking in tempo reale, consegne puntuali, flotta moderna.",
         "cta1": "Richiedi Preventivo",
-        "cta2": "Prenota Trasporto"
+        "cta2": "Prenota Trasporto",
+        "tracking": "Tracking in Tempo Reale",
+        "trackingDesc": "Monitora le tue spedizioni 24/7",
+        "inTransit": "In Transito",
+        "delivered": "Consegnato"
       },
       "stats": {
-        "trucks": "Camion",
+        "trucks": "Veicoli",
         "destinations": "Destinazioni",
         "clients": "Clienti Soddisfatti",
         "experience": "Anni di Esperienza"
       },
       "services": {
         "title": "I Nostri Servizi",
-        "subtitle": "Soluzioni di trasporto complete per ogni esigenza"
+        "subtitle": "Soluzioni di trasporto complete per ogni esigenza",
+        "local": "Trasporti Locali",
+        "localDesc": "Servizi di consegna rapidi e affidabili nella tua zona",
+        "national": "Trasporti Nazionali",
+        "nationalDesc": "Copertura completa in tutta Italia con consegne puntuali",
+        "refrigerated": "Trasporti Refrigerati",
+        "refrigeratedDesc": "Trasporto a temperatura controllata per merci deperibili",
+        "oversized": "Carichi Speciali",
+        "oversizedDesc": "Gestione di carichi fuori misura e carichi pesanti",
+        "warehouse": "Logistica e Magazzino",
+        "warehouseDesc": "Soluzioni complete di stoccaggio e distribuzione",
+        "express": "Consegne Express",
+        "expressDesc": "Servizi urgenti con consegna garantita in 24h"
       },
       "whyUs": {
-        "title": "Perché Sceglierci",
+        "title": "Perché Scegliere SGH Trasporti",
+        "subtitle": "Il partner ideale per tutte le tue esigenze di trasporto",
         "reliability": "Affidabilità",
-        "reliability_desc": "Consegne puntuali garantite",
+        "reliability_desc": "Consegne puntuali garantite con tasso di successo del 99.5%",
         "tracking": "Tracking in Tempo Reale",
-        "tracking_desc": "Monitora le tue spedizioni 24/7",
+        "tracking_desc": "Monitora le tue spedizioni in ogni momento con aggiornamenti live",
         "fleet": "Flotta Moderna",
-        "fleet_desc": "Veicoli nuovi e ben mantenuti",
+        "fleet_desc": "Veicoli nuovi e ben mantenuti con tecnologia GPS avanzata",
         "support": "Supporto 24/7",
-        "support_desc": "Assistenza sempre disponibile"
+        "support_desc": "Assistenza clienti sempre disponibile per qualsiasi esigenza"
       },
       "testimonials": {
         "title": "Cosa Dicono i Nostri Clienti",
         "subtitle": "La soddisfazione dei clienti è la nostra priorità"
+      },
+      "cta": {
+        "title": "Pronto a Iniziare?",
+        "subtitle": "Richiedi un preventivo gratuito o prenota un trasporto oggi stesso",
+        "getQuote": "Richiedi Preventivo",
+        "bookNow": "Prenota Trasporto"
       }
     },
     "testimonials": {
@@ -231,6 +254,8 @@
       "fullTime": "Full-time",
       "applyNow": "Candidati Ora",
       "fullName": "Nome Completo",
+      "email": "Email",
+      "phone": "Telefono",
       "position": "Posizione di Interesse",
       "selectPosition": "Seleziona...",
       "driver": "Autista",
@@ -238,6 +263,7 @@
       "mechanic": "Meccanico",
       "other": "Altro",
       "cvUpload": "Curriculum Vitae (PDF)",
+      "message": "Messaggio",
       "submitApplication": "Invia Candidatura",
       "applicationSubmitted": "Candidatura Inviata!",
       "willContactSoon": "Ti contatteremo presto per discutere della tua candidatura.",
@@ -343,5 +369,63 @@
       "quoteSubmitted": "Richiesta Inviata!",
       "thankYou": "Grazie per aver richiesto un preventivo con SGH Trasporti.",
       "willContact": "Il nostro team commerciale ti contatterà entro 24 ore con un preventivo dettagliato."
+    },
+    "portal": {
+      "dashboard": "Dashboard",
+      "activeBookings": "Prenotazioni Attive",
+      "completed": "Completate",
+      "pendingInvoices": "Fatture in Sospeso",
+      "totalSpent": "Totale Speso",
+      "recentBookings": "Prenotazioni Recenti",
+      "trackingCode": "Codice Tracking",
+      "route": "Percorso",
+      "status": "Stato",
+      "pickupDate": "Data Ritiro",
+      "price": "Prezzo",
+      "to": "a",
+      "noBookingsYet": "Nessuna prenotazione ancora. Crea la tua prima prenotazione!",
+      "newBooking": "Nuova Prenotazione",
+      "newBookingDesc": "Crea una nuova prenotazione di trasporto",
+      "getQuote": "Richiedi Preventivo",
+      "getQuoteDesc": "Richiedi una stima di prezzo"
+    },
+    "trackingPage": {
+      "title": "Traccia la Tua Spedizione",
+      "subtitle": "Inserisci il codice di tracking per visualizzare aggiornamenti in tempo reale e la posizione del tuo pacco",
+      "trackingCode": "Codice Tracking",
+      "trackingCodePlaceholder": "es. TRK-2024-12345",
+      "track": "Traccia",
+      "searching": "Ricerca in corso...",
+      "enterCode": "Inserisci un codice di tracking",
+      "notFound": "Prenotazione non trovata. Controlla il codice di tracking.",
+      "tracking": "Tracking",
+      "bookedOn": "Prenotato il",
+      "origin": "Origine",
+      "destination": "Destinazione",
+      "pickup": "Ritiro",
+      "estDelivery": "Consegna Prevista",
+      "packageDetails": "Dettagli Pacco",
+      "type": "Tipo",
+      "weight": "Peso",
+      "dimensions": "Dimensioni",
+      "value": "Valore",
+      "shipmentHistory": "Cronologia Spedizione"
+    },
+    "footer": {
+      "companyDesc": "Soluzioni professionali di trasporto e logistica per le tue esigenze aziendali.",
+      "quickLinks": "Link Rapidi",
+      "aboutUs": "Chi Siamo",
+      "services": "Servizi",
+      "fleet": "Flotta",
+      "careers": "Lavora con Noi",
+      "contact": "Contatti",
+      "servicesTitle": "Servizi",
+      "localTransport": "Trasporti Locali",
+      "nationalTransport": "Trasporti Nazionali",
+      "refrigeratedTransport": "Trasporti Refrigerati",
+      "specialCargo": "Carichi Speciali",
+      "tracking": "Tracking",
+      "contactInfo": "Informazioni di Contatto",
+      "allRightsReserved": "Tutti i diritti riservati."
     }
 }

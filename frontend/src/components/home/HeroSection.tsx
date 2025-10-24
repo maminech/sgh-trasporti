@@ -3,8 +3,14 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaBoxes, FaMapMarkedAlt } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
 export default function HeroSection() {
+  const t = useTranslations('home.hero');
+  const params = useParams();
+  const locale = params.locale as string;
+  
   return (
     <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20 md:py-32 overflow-hidden">
       {/* Background Pattern */}
@@ -22,19 +28,19 @@ export default function HeroSection() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Trasporto Professionale e Affidabile
+              {t('title')}
             </h1>
             <p className="text-xl md:text-2xl text-primary-100 mb-8">
-              Soluzioni di logistica complete per le tue esigenze di trasporto. Tracking in tempo reale, consegne puntuali, flotta moderna.
+              {t('subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/quote" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-4 px-8 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg">
-                <span>Richiedi Preventivo</span>
+              <Link href={`/${locale}/quote`} className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-4 px-8 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg">
+                <span>{t('cta1')}</span>
                 <FaArrowRight />
               </Link>
-              <Link href="/booking" className="border-2 border-white text-white hover:bg-white hover:text-primary-600 font-semibold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2">
+              <Link href={`/${locale}/booking`} className="border-2 border-white text-white hover:bg-white hover:text-primary-600 font-semibold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2">
                 <FaBoxes />
-                <span>Prenota Trasporto</span>
+                <span>{t('cta2')}</span>
               </Link>
             </div>
           </motion.div>
@@ -52,15 +58,15 @@ export default function HeroSection() {
                     <FaMapMarkedAlt className="text-3xl" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">Tracking in Tempo Reale</h3>
-                    <p className="text-primary-100">Monitora le tue spedizioni 24/7</p>
+                    <h3 className="text-xl font-bold">{t('tracking')}</h3>
+                    <p className="text-primary-100">{t('trackingDesc')}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="bg-white/5 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="font-semibold">Roma → Milano</span>
-                      <span className="text-green-400 text-sm">In Transito</span>
+                      <span className="text-green-400 text-sm">{t('inTransit')}</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-2">
                       <div className="bg-green-400 h-2 rounded-full" style={{ width: '65%' }} />
@@ -69,7 +75,7 @@ export default function HeroSection() {
                   <div className="bg-white/5 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="font-semibold">Napoli → Torino</span>
-                      <span className="text-blue-400 text-sm">Consegnato</span>
+                      <span className="text-blue-400 text-sm">{t('delivered')}</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-2">
                       <div className="bg-blue-400 h-2 rounded-full" style={{ width: '100%' }} />

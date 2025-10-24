@@ -2,43 +2,46 @@
 
 import { motion } from 'framer-motion';
 import { FaTruck, FaSnowflake, FaBox, FaShippingFast, FaWarehouse, FaGlobe } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function ServicesSection() {
+  const t = useTranslations('home.services');
+  
   const services = [
     {
       icon: FaTruck,
-      title: 'Trasporti Locali',
-      description: 'Servizi di consegna rapidi e affidabili nella tua zona',
+      title: t('local'),
+      description: t('localDesc'),
       color: 'bg-blue-500',
     },
     {
       icon: FaGlobe,
-      title: 'Trasporti Nazionali',
-      description: 'Copertura completa in tutta Italia con consegne puntuali',
+      title: t('national'),
+      description: t('nationalDesc'),
       color: 'bg-green-500',
     },
     {
       icon: FaSnowflake,
-      title: 'Trasporti Refrigerati',
-      description: 'Trasporto a temperatura controllata per merci deperibili',
+      title: t('refrigerated'),
+      description: t('refrigeratedDesc'),
       color: 'bg-cyan-500',
     },
     {
       icon: FaBox,
-      title: 'Carichi Speciali',
-      description: 'Gestione di carichi fuori misura e carichi pesanti',
+      title: t('oversized'),
+      description: t('oversizedDesc'),
       color: 'bg-purple-500',
     },
     {
       icon: FaWarehouse,
-      title: 'Logistica e Magazzino',
-      description: 'Soluzioni complete di stoccaggio e distribuzione',
+      title: t('warehouse'),
+      description: t('warehouseDesc'),
       color: 'bg-orange-500',
     },
     {
       icon: FaShippingFast,
-      title: 'Consegne Express',
-      description: 'Servizi urgenti con consegna garantita in 24h',
+      title: t('express'),
+      description: t('expressDesc'),
       color: 'bg-red-500',
     },
   ];
@@ -53,7 +56,7 @@ export default function ServicesSection() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
           >
-            I Nostri Servizi
+            {t('title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -62,7 +65,7 @@ export default function ServicesSection() {
             transition={{ delay: 0.1 }}
             className="text-xl text-gray-600 max-w-2xl mx-auto"
           >
-            Soluzioni di trasporto complete per ogni esigenza
+            {t('subtitle')}
           </motion.p>
         </div>
 

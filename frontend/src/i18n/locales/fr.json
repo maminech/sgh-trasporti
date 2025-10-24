@@ -33,34 +33,57 @@
   "home": {
     "hero": {
       "title": "Transport Professionnel et Fiable",
-      "subtitle": "Solutions logistiques complètes pour vos besoins de transport",
+      "subtitle": "Solutions logistiques complètes pour vos besoins de transport. Suivi en temps réel, livraisons ponctuelles, flotte moderne.",
       "cta1": "Demander un Devis",
-      "cta2": "Réserver un Transport"
+      "cta2": "Réserver Transport",
+      "tracking": "Suivi en Temps Réel",
+      "trackingDesc": "Surveillez vos envois 24h/24 et 7j/7",
+      "inTransit": "En Transit",
+      "delivered": "Livré"
     },
     "stats": {
-      "trucks": "Camions",
+      "trucks": "Véhicules",
       "destinations": "Destinations",
       "clients": "Clients Satisfaits",
       "experience": "Années d'Expérience"
     },
     "services": {
       "title": "Nos Services",
-      "subtitle": "Solutions de transport complètes pour tous les besoins"
+      "subtitle": "Solutions de transport complètes pour tous les besoins",
+      "local": "Transport Local",
+      "localDesc": "Services de livraison rapides et fiables dans votre région",
+      "national": "Transport National",
+      "nationalDesc": "Couverture complète dans toute l'Italie avec livraisons ponctuelles",
+      "refrigerated": "Transport Réfrigéré",
+      "refrigeratedDesc": "Transport à température contrôlée pour denrées périssables",
+      "oversized": "Charges Spéciales",
+      "oversizedDesc": "Gestion de charges hors gabarit et charges lourdes",
+      "warehouse": "Logistique & Entreposage",
+      "warehouseDesc": "Solutions complètes de stockage et distribution",
+      "express": "Livraisons Express",
+      "expressDesc": "Services urgents avec livraison garantie en 24h"
     },
     "whyUs": {
-      "title": "Pourquoi Nous Choisir",
+      "title": "Pourquoi Choisir SGH Trasporti",
+      "subtitle": "Le partenaire idéal pour tous vos besoins de transport",
       "reliability": "Fiabilité",
-      "reliability_desc": "Livraisons ponctuelles garanties",
+      "reliability_desc": "Livraisons ponctuelles garanties avec 99,5% de taux de réussite",
       "tracking": "Suivi en Temps Réel",
-      "tracking_desc": "Surveillez vos envois 24h/24 et 7j/7",
+      "tracking_desc": "Surveillez vos envois à tout moment avec mises à jour en direct",
       "fleet": "Flotte Moderne",
-      "fleet_desc": "Véhicules neufs et bien entretenus",
+      "fleet_desc": "Véhicules neufs et bien entretenus avec technologie GPS avancée",
       "support": "Support 24/7",
-      "support_desc": "Assistance toujours disponible"
+      "support_desc": "Assistance clientèle toujours disponible pour tout besoin"
     },
     "testimonials": {
       "title": "Ce Que Disent Nos Clients",
       "subtitle": "La satisfaction client est notre priorité"
+    },
+    "cta": {
+      "title": "Prêt à Commencer?",
+      "subtitle": "Demandez un devis gratuit ou réservez un transport aujourd'hui",
+      "getQuote": "Demander un Devis",
+      "bookNow": "Réserver Transport"
     }
   },
   "testimonials": {
@@ -231,6 +254,8 @@
     "fullTime": "Temps plein",
     "applyNow": "Postuler Maintenant",
     "fullName": "Nom Complet",
+    "email": "Email",
+    "phone": "Téléphone",
     "position": "Poste d'Intérêt",
     "selectPosition": "Sélectionner...",
     "driver": "Chauffeur",
@@ -238,6 +263,7 @@
     "mechanic": "Mécanicien",
     "other": "Autre",
     "cvUpload": "Curriculum Vitae (PDF)",
+    "message": "Message",
     "submitApplication": "Soumettre la Candidature",
     "applicationSubmitted": "Candidature Soumise!",
     "willContactSoon": "Nous vous contacterons bientôt pour discuter de votre candidature.",
@@ -343,5 +369,63 @@
     "quoteSubmitted": "Demande Soumise!",
     "thankYou": "Merci d'avoir demandé un devis auprès de SGH Trasporti.",
     "willContact": "Notre équipe commerciale vous contactera sous 24 heures avec un devis détaillé."
+  },
+  "portal": {
+    "dashboard": "Tableau de Bord",
+    "activeBookings": "Réservations Actives",
+    "completed": "Terminées",
+    "pendingInvoices": "Factures en Attente",
+    "totalSpent": "Total Dépensé",
+    "recentBookings": "Réservations Récentes",
+    "trackingCode": "Code de Suivi",
+    "route": "Itinéraire",
+    "status": "Statut",
+    "pickupDate": "Date d'Enlèvement",
+    "price": "Prix",
+    "to": "à",
+    "noBookingsYet": "Aucune réservation pour le moment. Créez votre première réservation!",
+    "newBooking": "Nouvelle Réservation",
+    "newBookingDesc": "Créer une nouvelle réservation de transport",
+    "getQuote": "Demander un Devis",
+    "getQuoteDesc": "Demander une estimation de prix"
+  },
+  "trackingPage": {
+    "title": "Suivre Votre Envoi",
+    "subtitle": "Entrez votre code de suivi pour voir les mises à jour en temps réel et la localisation de votre colis",
+    "trackingCode": "Code de Suivi",
+    "trackingCodePlaceholder": "ex. TRK-2024-12345",
+    "track": "Suivre",
+    "searching": "Recherche...",
+    "enterCode": "Veuillez entrer un code de suivi",
+    "notFound": "Réservation non trouvée. Veuillez vérifier votre code de suivi.",
+    "tracking": "Suivi",
+    "bookedOn": "Réservé le",
+    "origin": "Origine",
+    "destination": "Destination",
+    "pickup": "Enlèvement",
+    "estDelivery": "Livraison Estimée",
+    "packageDetails": "Détails du Colis",
+    "type": "Type",
+    "weight": "Poids",
+    "dimensions": "Dimensions",
+    "value": "Valeur",
+    "shipmentHistory": "Historique d'Envoi"
+  },
+  "footer": {
+    "companyDesc": "Solutions professionnelles de transport et de logistique pour vos besoins commerciaux.",
+    "quickLinks": "Liens Rapides",
+    "aboutUs": "À Propos",
+    "services": "Services",
+    "fleet": "Flotte",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "servicesTitle": "Services",
+    "localTransport": "Transport Local",
+    "nationalTransport": "Transport National",
+    "refrigeratedTransport": "Transport Frigorifique",
+    "specialCargo": "Fret Spécial",
+    "tracking": "Suivi",
+    "contactInfo": "Informations de Contact",
+    "allRightsReserved": "Tous droits réservés."
   }
 }

@@ -33,34 +33,57 @@
   "home": {
     "hero": {
       "title": "Professional and Reliable Transport",
-      "subtitle": "Complete logistics solutions for your transport needs",
-      "cta1": "Get a Quote",
-      "cta2": "Book Transport"
+      "subtitle": "Complete logistics solutions for your transport needs. Real-time tracking, on-time deliveries, modern fleet.",
+      "cta1": "Get Quote",
+      "cta2": "Book Transport",
+      "tracking": "Real-Time Tracking",
+      "trackingDesc": "Monitor your shipments 24/7",
+      "inTransit": "In Transit",
+      "delivered": "Delivered"
     },
     "stats": {
-      "trucks": "Trucks",
+      "trucks": "Vehicles",
       "destinations": "Destinations",
-      "clients": "Happy Clients",
+      "clients": "Satisfied Clients",
       "experience": "Years of Experience"
     },
     "services": {
       "title": "Our Services",
-      "subtitle": "Complete transport solutions for every need"
+      "subtitle": "Complete transport solutions for every need",
+      "local": "Local Transport",
+      "localDesc": "Fast and reliable delivery services in your area",
+      "national": "National Transport",
+      "nationalDesc": "Complete coverage throughout Italy with on-time deliveries",
+      "refrigerated": "Refrigerated Transport",
+      "refrigeratedDesc": "Temperature-controlled transport for perishable goods",
+      "oversized": "Special Cargo",
+      "oversizedDesc": "Handling oversized and heavy loads",
+      "warehouse": "Logistics & Warehousing",
+      "warehouseDesc": "Complete storage and distribution solutions",
+      "express": "Express Deliveries",
+      "expressDesc": "Urgent services with guaranteed 24h delivery"
     },
     "whyUs": {
-      "title": "Why Choose Us",
+      "title": "Why Choose SGH Trasporti",
+      "subtitle": "The ideal partner for all your transport needs",
       "reliability": "Reliability",
-      "reliability_desc": "Guaranteed on-time deliveries",
+      "reliability_desc": "Guaranteed on-time deliveries with 99.5% success rate",
       "tracking": "Real-Time Tracking",
-      "tracking_desc": "Monitor your shipments 24/7",
+      "tracking_desc": "Monitor your shipments at all times with live updates",
       "fleet": "Modern Fleet",
-      "fleet_desc": "New and well-maintained vehicles",
+      "fleet_desc": "New and well-maintained vehicles with advanced GPS technology",
       "support": "24/7 Support",
-      "support_desc": "Always available assistance"
+      "support_desc": "Customer support always available for any need"
     },
     "testimonials": {
       "title": "What Our Clients Say",
       "subtitle": "Customer satisfaction is our priority"
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Request a free quote or book a transport today",
+      "getQuote": "Get Quote",
+      "bookNow": "Book Transport"
     }
   },
   "testimonials": {
@@ -231,6 +254,8 @@
     "fullTime": "Full-time",
     "applyNow": "Apply Now",
     "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
     "position": "Position of Interest",
     "selectPosition": "Select...",
     "driver": "Driver",
@@ -238,6 +263,7 @@
     "mechanic": "Mechanic",
     "other": "Other",
     "cvUpload": "Resume (PDF)",
+    "message": "Message",
     "submitApplication": "Submit Application",
     "applicationSubmitted": "Application Submitted!",
     "willContactSoon": "We will contact you soon to discuss your application.",
@@ -343,5 +369,63 @@
     "quoteSubmitted": "Request Submitted!",
     "thankYou": "Thank you for requesting a quote with SGH Trasporti.",
     "willContact": "Our sales team will contact you within 24 hours with a detailed quote."
+  },
+  "portal": {
+    "dashboard": "Dashboard",
+    "activeBookings": "Active Bookings",
+    "completed": "Completed",
+    "pendingInvoices": "Pending Invoices",
+    "totalSpent": "Total Spent",
+    "recentBookings": "Recent Bookings",
+    "trackingCode": "Tracking Code",
+    "route": "Route",
+    "status": "Status",
+    "pickupDate": "Pickup Date",
+    "price": "Price",
+    "to": "to",
+    "noBookingsYet": "No bookings yet. Create your first booking!",
+    "newBooking": "New Booking",
+    "newBookingDesc": "Create a new transport booking",
+    "getQuote": "Get Quote",
+    "getQuoteDesc": "Request a price estimate"
+  },
+  "trackingPage": {
+    "title": "Track Your Shipment",
+    "subtitle": "Enter your tracking code to view real-time updates and location of your package",
+    "trackingCode": "Tracking Code",
+    "trackingCodePlaceholder": "e.g., TRK-2024-12345",
+    "track": "Track",
+    "searching": "Searching...",
+    "enterCode": "Please enter a tracking code",
+    "notFound": "Booking not found. Please check your tracking code.",
+    "tracking": "Tracking",
+    "bookedOn": "Booked on",
+    "origin": "Origin",
+    "destination": "Destination",
+    "pickup": "Pickup",
+    "estDelivery": "Est. Delivery",
+    "packageDetails": "Package Details",
+    "type": "Type",
+    "weight": "Weight",
+    "dimensions": "Dimensions",
+    "value": "Value",
+    "shipmentHistory": "Shipment History"
+  },
+  "footer": {
+    "companyDesc": "Professional transport and logistics solutions for your business needs.",
+    "quickLinks": "Quick Links",
+    "aboutUs": "About Us",
+    "services": "Services",
+    "fleet": "Fleet",
+    "careers": "Careers",
+    "contact": "Contact",
+    "servicesTitle": "Services",
+    "localTransport": "Local Transport",
+    "nationalTransport": "National Transport",
+    "refrigeratedTransport": "Refrigerated Transport",
+    "specialCargo": "Special Cargo",
+    "tracking": "Tracking",
+    "contactInfo": "Contact Info",
+    "allRightsReserved": "All rights reserved."
   }
 }

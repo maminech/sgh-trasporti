@@ -3,12 +3,15 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { api } from '@/lib/api';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaTimes } from 'react-icons/fa';
 
 export default function AdminBookings() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const [newStatus, setNewStatus] = useState('');
 
   useEffect(() => {
     fetchBookings();
@@ -36,6 +39,33 @@ export default function AdminBookings() {
       cancelled: 'bg-red-100 text-red-800',
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  const openStatusModal = (booking: any) => {
+    setSelectedBooking(booking);
+    setNewStatus(booking.status);
+    setShowStatusModal(true);
+  };
+
+  const updateBookingStatus = async () => {
+    if (!selectedBooking || !newStatus) return;
+    try {
+      await api.bookings.update(selectedBooking._id, { status: newStatus });
+      setShowStatusModal(false);
+      fetchBookings();
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+    }
+  };
+
+  const deleteBooking = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this booking?')) return;
+    try {
+      await api.bookings.delete(id);
+      fetchBookings();
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+    }
   };
 
   return (
@@ -104,13 +134,18 @@ export default function AdminBookings() {
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex space-x-2">
-                          <button className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <FaEye />
-                          </button>
-                          <button className="p-2 text-green-600 hover:bg-green-50 rounded">
+                          <button 
+                            onClick={() => openStatusModal(booking)}
+                            className="p-2 text-green-600 hover:bg-green-50 rounded"
+                            title="Update Status"
+                          >
                             <FaEdit />
                           </button>
-                          <button className="p-2 text-red-600 hover:bg-red-50 rounded">
+                          <button 
+                            onClick={() => deleteBooking(booking._id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded"
+                            title="Delete"
+                          >
                             <FaTrash />
                           </button>
                         </div>
@@ -122,6 +157,61 @@ export default function AdminBookings() {
             </div>
           )}
         </div>
+
+        {/* Status Update Modal */}
+        {showStatusModal && selectedBooking && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-md w-full">
+              <div className="p-6 border-b flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Update Booking Status</h2>
+                <button onClick={() => setShowStatusModal(false)} className="text-gray-500 hover:text-gray-700">
+                  <FaTimes size={24} />
+                </button>
+              </div>
+              
+              <div className="p-6 space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600 mb-2">Tracking Code</p>
+                  <p className="font-semibold">{selectedBooking.trackingCode}</p>
+                </div>
+                
+                <div>
+                  <p className="text-sm text-gray-600 mb-2">Customer</p>
+                  <p className="font-semibold">{selectedBooking.customerInfo.name}</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">New Status *</label>
+                  <select
+                    required
+                    className="input-field"
+                    value={newStatus}
+                    onChange={(e) => setNewStatus(e.target.value)}
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="in_transit">In Transit</option>
+                    <option value="out_for_delivery">Out for Delivery</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button onClick={updateBookingStatus} className="flex-1 btn-primary">
+                    Update Status
+                  </button>
+                  <button 
+                    onClick={() => setShowStatusModal(false)} 
+                    className="flex-1 btn-secondary"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

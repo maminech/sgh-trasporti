@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import CustomerLayout from '@/components/portal/CustomerLayout';
 import { FiMapPin, FiTruck, FiPackage } from 'react-icons/fi';
 import { api } from '@/lib/api';
 import Link from 'next/link';
 
 interface BookingsPageProps {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 export default function BookingsPage({ params }: BookingsPageProps) {
+  const { locale } = use(params);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -44,7 +45,7 @@ export default function BookingsPage({ params }: BookingsPageProps) {
   };
 
   return (
-    <CustomerLayout locale={params.locale}>
+    <CustomerLayout locale={locale}>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
@@ -62,7 +63,7 @@ export default function BookingsPage({ params }: BookingsPageProps) {
             </select>
             
             <Link
-              href={`/${params.locale}/booking`}
+              href={`/${locale}/booking`}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               New Booking
@@ -80,7 +81,7 @@ export default function BookingsPage({ params }: BookingsPageProps) {
             <p className="text-lg text-gray-600 mb-2">No bookings found</p>
             <p className="text-sm text-gray-500 mb-6">Create your first booking to get started</p>
             <Link
-              href={`/${params.locale}/booking`}
+              href={`/${locale}/booking`}
               className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               Create Booking
@@ -156,14 +157,14 @@ export default function BookingsPage({ params }: BookingsPageProps) {
                     <div className="space-x-2">
                       {booking.status === 'in_transit' && (
                         <Link
-                          href={`/${params.locale}/tracking/${booking.trackingCode}`}
+                          href={`/${locale}/tracking/${booking.trackingCode}`}
                           className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors inline-block"
                         >
                           Track Live
                         </Link>
                       )}
                       <Link
-                        href={`/${params.locale}/portal/bookings/${booking._id}`}
+                        href={`/${locale}/portal/bookings/${booking._id}`}
                         className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors inline-block"
                       >
                         View Details

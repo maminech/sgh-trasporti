@@ -2,28 +2,31 @@
 
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaMapMarkedAlt, FaTruck, FaHeadset } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function WhyUsSection() {
+  const t = useTranslations('home.whyUs');
+  
   const features = [
     {
       icon: FaCheckCircle,
-      title: 'Affidabilità',
-      description: 'Consegne puntuali garantite con tasso di successo del 99.5%',
+      title: t('reliability'),
+      description: t('reliability_desc'),
     },
     {
       icon: FaMapMarkedAlt,
-      title: 'Tracking in Tempo Reale',
-      description: 'Monitora le tue spedizioni in ogni momento con aggiornamenti live',
+      title: t('tracking'),
+      description: t('tracking_desc'),
     },
     {
       icon: FaTruck,
-      title: 'Flotta Moderna',
-      description: 'Veicoli nuovi e ben mantenuti con tecnologia GPS avanzata',
+      title: t('fleet'),
+      description: t('fleet_desc'),
     },
     {
       icon: FaHeadset,
-      title: 'Supporto 24/7',
-      description: 'Assistenza clienti sempre disponibile per qualsiasi esigenza',
+      title: t('support'),
+      description: t('support_desc'),
     },
   ];
 
@@ -37,7 +40,7 @@ export default function WhyUsSection() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
           >
-            Perché Scegliere SGH Trasporti
+            {t('title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +49,7 @@ export default function WhyUsSection() {
             transition={{ delay: 0.1 }}
             className="text-xl text-gray-600 max-w-2xl mx-auto"
           >
-            Il partner ideale per tutte le tue esigenze di trasporto
+            {t('subtitle')}
           </motion.p>
         </div>
 

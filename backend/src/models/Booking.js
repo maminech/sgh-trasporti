@@ -8,8 +8,9 @@ const bookingSchema = new mongoose.Schema({
   },
   trackingCode: {
     type: String,
-    required: true,
+    required: false, // Will be auto-generated
     unique: true,
+    sparse: true, // Allow multiple null values during creation
   },
   customerInfo: {
     name: {
@@ -144,8 +145,9 @@ const bookingSchema = new mongoose.Schema({
 });
 
 // Generate tracking code before saving
-bookingSchema.pre('save', async function(next) {
+bookingSchema.pre('save', function(next) {
   if (!this.trackingCode) {
+    // Generate unique tracking code: SGH + timestamp + random string
     this.trackingCode = 'SGH' + Date.now() + Math.random().toString(36).substr(2, 6).toUpperCase();
   }
   next();
