@@ -6,6 +6,7 @@ import HeroSection from '@/components/home/HeroSection';
 import StatsSection from '@/components/home/StatsSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import WhyUsSection from '@/components/home/WhyUsSection';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
 
 export default async function HomePage({
   params
@@ -22,6 +23,7 @@ export default async function HomePage({
         <StatsSection />
         <ServicesSection />
         <WhyUsSection />
+        <TestimonialsSection />
         
         {/* CTA Section */}
         <section className="bg-primary-600 py-16">

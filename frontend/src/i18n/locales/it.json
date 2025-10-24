@@ -59,7 +59,25 @@
         "support_desc": "Assistenza sempre disponibile"
       },
       "testimonials": {
-        "title": "Cosa Dicono i Nostri Clienti"
+        "title": "Cosa Dicono i Nostri Clienti",
+        "subtitle": "La soddisfazione dei clienti è la nostra priorità"
+      }
+    },
+    "testimonials": {
+      "testimonial1": {
+        "name": "Giuseppina A",
+        "text": "Sghaier Bacem mi ha aiutato tantissimo con il mio trasloco. La distanza non era molta ma le cose invece erano tante. Con rapidità e precisione è stato fatto tutto secondo le mie richieste, ad un prezzo molto interessante.",
+        "role": "Cliente Privato"
+      },
+      "testimonial2": {
+        "name": "Nicola P",
+        "text": "La mia azienda vende soprattutto in Italia ma ha due importanti clienti in Germania. Per spedire la merce mi fido solo di Sghaier Bacem che arriva direttamente ai loro magazzini e so con certezza che tutto è andato secondo i piani.",
+        "role": "Imprenditore"
+      },
+      "testimonial3": {
+        "name": "Umberto B",
+        "text": "Sghaier Bacem è il mio vettore di fiducia. Per piccole e grandi spedizioni mi rivolgo a lui e non c'è mai stato un intoppo.",
+        "role": "Cliente Business"
       }
     },
     "booking": {
@@ -106,7 +124,7 @@
     },
     "about": {
       "title": "Chi Siamo",
-      "subtitle": "SGH Trasporti è un'azienda con sede in provincia di Parma, specializzata nella movimentazione delle merci su strada. Fondata e gestita da Sghaier Bacem, offriamo servizi di trasporto affidabili sia a livello nazionale che internazionale.",
+      "subtitle": "SGH Trasporti è un'azienda con sede in provincia di Parma, specializzata nella movimentazione delle merci su strada. Fondata e gestita da Sghaier Bacem, l'azienda offre servizi di trasporto sia a livello nazionale che internazionale.",
       "ourStory": "La Nostra Storia",
       "ourValues": "I Nostri Valori",
       "certifications": "Certificazioni e Partnership",
@@ -114,11 +132,11 @@
       "vehicles": "Veicoli nella Flotta",
       "happyClients": "Clienti Soddisfatti",
       "countriesServed": "Paesi Serviti",
-      "story1": "SGH Trasporti è un'azienda specializzata nella movimentazione delle merci su strada, con sede in provincia di Parma. Fondata e gestita da Sghaier Bacem, l'azienda si distingue per la competenza del suo staff e la disponibilità di vari mezzi di trasporto.",
-      "story2": "La globalizzazione ha reso i mercati più vicini e la possibilità di acquistare online ha aumentato la domanda di servizi di trasporto affidabili e professionali. SGH Trasporti risponde a questa esigenza offrendo un servizio altamente professionale, dinamico ed efficiente.",
-      "story3": "Ci distinguiamo per la cortesia, la disponibilità e la soddisfazione del cliente, offrendo prezzi competitivi che garantiscono un ottimo rapporto qualità-prezzo.",
+      "story1": "SGH Trasporti è un'azienda con sede in provincia di Parma, specializzata nella movimentazione delle merci su strada. Fondata e gestita da Sghaier Bacem, l'azienda offre servizi di trasporto sia a livello nazionale che internazionale, grazie alla disponibilità di vari mezzi di trasporto e alla competenza del suo staff.",
+      "story2": "La globalizzazione ha reso i mercati più vicini e la possibilità di acquistare online ha aumentato la domanda di servizi di trasporto affidabili e professionali.",
+      "story3": "SGH Trasporti si distingue per la cortesia, la disponibilità e la soddisfazione del cliente, offrendo un servizio altamente professionale, dinamico ed efficiente, con prezzi competitivi che garantiscono un ottimo rapporto qualità-prezzo.",
       "reliability": "Affidabilità",
-      "reliabilityDesc": "Consegne puntuali e servizio di qualità",
+      "reliabilityDesc": "Consegne puntuali e servizio di qualità garantita",
       "innovation": "Professionalità",
       "innovationDesc": "Servizio dinamico ed efficiente",
       "professionalism": "Cortesia",
@@ -128,27 +146,27 @@
     },
     "services": {
       "title": "I Nostri Servizi",
-      "subtitle": "Soluzioni di trasporto complete e personalizzate per ogni esigenza logistica. Dalla spedizione locale alle consegne internazionali.",
+      "subtitle": "Soluzioni di trasporto complete per ogni esigenza logistica.",
       "national": "Trasporti Nazionali",
-      "nationalDesc": "Servizio di trasporto merci in tutta Italia con consegne rapide e sicure. Copertura capillare in tutte le regioni.",
+      "nationalDesc": "Trasporto merci in tutta Italia, con partenza e destinazione entro i confini nazionali.",
       "international": "Trasporti Internazionali",
-      "internationalDesc": "Spedizioni in tutta Europa con gestione doganale completa. Servizio porta a porta garantito.",
+      "internationalDesc": "Servizi di trasporto in Europa, utilizzando diverse modalità, tra cui treni e navi.",
       "refrigerated": "Trasporti Refrigerati",
-      "refrigeratedDesc": "Trasporto a temperatura controllata per prodotti alimentari e farmaceutici. Certificazione ATP.",
+      "refrigeratedDesc": "Trasporto a temperatura controllata per prodotti alimentari e farmaceutici.",
       "oversized": "Carichi Eccezionali",
-      "oversizedDesc": "Trasporto di merci voluminose o pesanti con mezzi specializzati e scorta quando necessario.",
+      "oversizedDesc": "Trasporto di merci voluminose o pesanti con mezzi specializzati.",
       "logistics": "Logistica e Magazzino",
-      "logisticsDesc": "Servizi di stoccaggio, picking, packing e gestione inventario per ottimizzare la vostra supply chain.",
+      "logisticsDesc": "Servizi di stoccaggio e gestione inventario per ottimizzare la vostra supply chain.",
       "adr": "Trasporti ADR",
-      "adrDesc": "Trasporto di merci pericolose con personale certificato ADR e mezzi omologati secondo normativa.",
+      "adrDesc": "Trasporto di merci pericolose con personale certificato ADR.",
       "needQuote": "Hai Bisogno di un Preventivo?",
       "needQuoteDesc": "Contattaci oggi per un preventivo gratuito e senza impegno. Il nostro team è pronto ad assisterti.",
       "requestQuote": "Richiedi Preventivo",
       "contactUs": "Contattaci",
-      "delivery24": "Consegna 24-48h",
+      "delivery24": "Consegna rapida",
       "realTimeTracking": "Tracking in tempo reale",
       "insuranceIncluded": "Assicurazione inclusa",
-      "euCoverage": "Copertura EU",
+      "euCoverage": "Copertura Europea",
       "customsProcedures": "Pratiche doganali",
       "certifiedPartners": "Partner certificati",
       "constantTemp": "Temperatura costante",

@@ -59,7 +59,25 @@
       "support_desc": "Always available assistance"
     },
     "testimonials": {
-      "title": "What Our Clients Say"
+      "title": "What Our Clients Say",
+      "subtitle": "Customer satisfaction is our priority"
+    }
+  },
+  "testimonials": {
+    "testimonial1": {
+      "name": "Giuseppina A",
+      "text": "Sghaier Bacem helped me a lot with my move. The distance wasn't much but there were many things. With speed and precision everything was done according to my requests, at a very interesting price.",
+      "role": "Private Customer"
+    },
+    "testimonial2": {
+      "name": "Nicola P",
+      "text": "My company sells mainly in Italy but has two important clients in Germany. To ship the goods I only trust Sghaier Bacem who delivers directly to their warehouses and I know for sure that everything went according to plan.",
+      "role": "Entrepreneur"
+    },
+    "testimonial3": {
+      "name": "Umberto B",
+      "text": "Sghaier Bacem is my trusted carrier. For small and large shipments I turn to him and there has never been a hitch.",
+      "role": "Business Client"
     }
   },
   "booking": {
@@ -106,7 +124,7 @@
   },
   "about": {
     "title": "About Us",
-    "subtitle": "SGH Trasporti is a company based in the province of Parma, specialized in road freight transport. Founded and managed by Sghaier Bacem, we offer reliable transport services both nationally and internationally.",
+    "subtitle": "SGH Trasporti is a company based in the province of Parma, specialized in road freight transport. Founded and managed by Sghaier Bacem, the company offers transport services both nationally and internationally.",
     "ourStory": "Our Story",
     "ourValues": "Our Values",
     "certifications": "Certifications and Partnerships",
@@ -114,41 +132,41 @@
     "vehicles": "Vehicles in Fleet",
     "happyClients": "Happy Clients",
     "countriesServed": "Countries Served",
-    "story1": "SGH Trasporti is a company specialized in road freight transport, based in the province of Parma. Founded and managed by Sghaier Bacem, the company was born with the goal of meeting the growing logistics needs of an increasingly globalized market.",
-    "story2": "Globalization and the increase in online shopping have led to a surge in demand for transport services, especially in e-commerce. With speed, professionalism, and passion for our work, we ensure safe, efficient deliveries that meet every logistical need.",
-    "story3": "Courtesy, availability, and customer satisfaction are the foundation of our business. We provide competitive rates while maintaining high quality standards. We work nationwide and internationally, ensuring punctuality and reliability in every shipment.",
+    "story1": "SGH Trasporti is a company based in the province of Parma, specialized in road freight transport. Founded and managed by Sghaier Bacem, the company offers transport services both nationally and internationally, thanks to the availability of various means of transport and the expertise of its staff.",
+    "story2": "Globalization has brought markets closer together and the ability to shop online has increased the demand for reliable and professional transport services.",
+    "story3": "SGH Trasporti stands out for courtesy, availability and customer satisfaction, offering a highly professional, dynamic and efficient service, with competitive prices that guarantee excellent value for money.",
     "reliability": "Reliability",
     "reliabilityDesc": "Punctual deliveries and guaranteed service quality",
     "innovation": "Professionalism",
-    "innovationDesc": "Expert team and modern vehicles",
+    "innovationDesc": "Dynamic and efficient service",
     "professionalism": "Courtesy",
-    "professionalismDesc": "Customer-focused service and personalized assistance",
+    "professionalismDesc": "Availability and customer satisfaction",
     "coverage": "Coverage",
     "coverageDesc": "National and international transport services"
   },
   "services": {
     "title": "Our Services",
-    "subtitle": "Complete and customized transport solutions for every logistics need. From local shipping to international deliveries.",
+    "subtitle": "Complete transport solutions for every logistics need.",
     "national": "National Transport",
-    "nationalDesc": "Freight transport service throughout Italy with fast and secure deliveries. Comprehensive coverage in all regions.",
+    "nationalDesc": "Freight transport throughout Italy, with departure and destination within national borders.",
     "international": "International Transport",
-    "internationalDesc": "Shipments throughout Europe with complete customs management. Guaranteed door-to-door service.",
+    "internationalDesc": "Transport services in Europe, using different modes, including trains and ships.",
     "refrigerated": "Refrigerated Transport",
-    "refrigeratedDesc": "Temperature-controlled transport for food and pharmaceutical products. ATP certification.",
+    "refrigeratedDesc": "Temperature-controlled transport for food and pharmaceutical products.",
     "oversized": "Oversized Loads",
-    "oversizedDesc": "Transport of bulky or heavy goods with specialized vehicles and escort when necessary.",
+    "oversizedDesc": "Transport of bulky or heavy goods with specialized vehicles.",
     "logistics": "Logistics and Warehouse",
-    "logisticsDesc": "Storage, picking, packing and inventory management services to optimize your supply chain.",
+    "logisticsDesc": "Storage and inventory management services to optimize your supply chain.",
     "adr": "ADR Transport",
-    "adrDesc": "Transport of dangerous goods with ADR certified personnel and vehicles approved according to regulations.",
+    "adrDesc": "Transport of dangerous goods with ADR certified personnel.",
     "needQuote": "Need a Quote?",
     "needQuoteDesc": "Contact us today for a free, no-obligation quote. Our team is ready to assist you.",
     "requestQuote": "Request Quote",
     "contactUs": "Contact Us",
-    "delivery24": "24-48h Delivery",
+    "delivery24": "Fast Delivery",
     "realTimeTracking": "Real-time tracking",
     "insuranceIncluded": "Insurance included",
-    "euCoverage": "EU Coverage",
+    "euCoverage": "European Coverage",
     "customsProcedures": "Customs procedures",
     "certifiedPartners": "Certified partners",
     "constantTemp": "Constant temperature",

@@ -1,9 +1,19 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { FiTruck, FiAward, FiUsers, FiMapPin } from 'react-icons/fi';
 import { useTranslations } from 'next-intl';
+
+export const metadata: Metadata = {
+  title: 'Chi Siamo - SGH Trasporti | Trasporti Nazionali e Internazionali',
+  description: 'SGH Trasporti è un\'azienda con sede in provincia di Parma, specializzata nella movimentazione delle merci su strada. Fondata e gestita da Sghaier Bacem, offriamo servizi di trasporto affidabili sia a livello nazionale che internazionale.',
+  keywords: 'SGH Trasporti, Sghaier Bacem, trasporti Parma, trasporti nazionali, trasporti internazionali, autotrasporti, logistica Italia',
+  openGraph: {
+    title: 'Chi Siamo - SGH Trasporti',
+    description: 'Scopri la storia di SGH Trasporti, azienda leader nel trasporto merci in Italia e Europa.',
+    type: 'website',
+  },
+};
 
 export default function AboutPage() {
   const t = useTranslations('about');

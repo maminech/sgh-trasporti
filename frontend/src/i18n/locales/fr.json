@@ -59,7 +59,25 @@
       "support_desc": "Assistance toujours disponible"
     },
     "testimonials": {
-      "title": "Ce Que Disent Nos Clients"
+      "title": "Ce Que Disent Nos Clients",
+      "subtitle": "La satisfaction client est notre priorité"
+    }
+  },
+  "testimonials": {
+    "testimonial1": {
+      "name": "Giuseppina A",
+      "text": "Sghaier Bacem m'a beaucoup aidé avec mon déménagement. La distance n'était pas grande mais il y avait beaucoup de choses. Avec rapidité et précision, tout a été fait selon mes demandes, à un prix très intéressant.",
+      "role": "Client Privé"
+    },
+    "testimonial2": {
+      "name": "Nicola P",
+      "text": "Mon entreprise vend principalement en Italie mais a deux clients importants en Allemagne. Pour expédier les marchandises, je ne fais confiance qu'à Sghaier Bacem qui livre directement à leurs entrepôts et je sais avec certitude que tout s'est déroulé comme prévu.",
+      "role": "Entrepreneur"
+    },
+    "testimonial3": {
+      "name": "Umberto B",
+      "text": "Sghaier Bacem est mon transporteur de confiance. Pour les petites et grandes expéditions, je me tourne vers lui et il n'y a jamais eu de problème.",
+      "role": "Client Professionnel"
     }
   },
   "booking": {
@@ -106,7 +124,7 @@
   },
   "about": {
     "title": "À Propos de Nous",
-    "subtitle": "SGH Trasporti est une entreprise basée dans la province de Parme, spécialisée dans le transport routier de marchandises. Fondée et gérée par Sghaier Bacem, nous offrons des services de transport fiables tant au niveau national qu'international.",
+    "subtitle": "SGH Trasporti est une entreprise basée dans la province de Parme, spécialisée dans le transport routier de marchandises. Fondée et gérée par Sghaier Bacem, l'entreprise offre des services de transport tant au niveau national qu'international.",
     "ourStory": "Notre Histoire",
     "ourValues": "Nos Valeurs",
     "certifications": "Certifications et Partenariats",
@@ -114,41 +132,41 @@
     "vehicles": "Véhicules dans la Flotte",
     "happyClients": "Clients Satisfaits",
     "countriesServed": "Pays Desservis",
-    "story1": "SGH Trasporti est une entreprise spécialisée dans le transport routier de marchandises, basée dans la province de Parme. Fondée et gérée par Sghaier Bacem, l'entreprise est née avec l'objectif de répondre aux besoins logistiques croissants d'un marché de plus en plus mondialisé.",
-    "story2": "La mondialisation et l'augmentation des achats en ligne ont entraîné une forte demande de services de transport, en particulier dans le commerce électronique. Avec rapidité, professionnalisme et passion pour notre travail, nous garantissons des livraisons sûres et efficaces qui répondent à tous les besoins logistiques.",
-    "story3": "La courtoisie, la disponibilité et la satisfaction client sont au cœur de notre activité. Nous proposons des tarifs compétitifs tout en maintenant des normes de qualité élevées. Nous travaillons au niveau national et international, garantissant ponctualité et fiabilité dans chaque expédition.",
+    "story1": "SGH Trasporti est une entreprise basée dans la province de Parme, spécialisée dans le transport routier de marchandises. Fondée et gérée par Sghaier Bacem, l'entreprise offre des services de transport tant au niveau national qu'international, grâce à la disponibilité de divers moyens de transport et à l'expertise de son personnel.",
+    "story2": "La mondialisation a rapproché les marchés et la possibilité d'acheter en ligne a augmenté la demande de services de transport fiables et professionnels.",
+    "story3": "SGH Trasporti se distingue par la courtoisie, la disponibilité et la satisfaction client, offrant un service hautement professionnel, dynamique et efficace, avec des prix compétitifs qui garantissent un excellent rapport qualité-prix.",
     "reliability": "Fiabilité",
     "reliabilityDesc": "Livraisons ponctuelles et qualité de service garantie",
     "innovation": "Professionnalisme",
-    "innovationDesc": "Équipe experte et véhicules modernes",
+    "innovationDesc": "Service dynamique et efficace",
     "professionalism": "Courtoisie",
-    "professionalismDesc": "Service axé sur le client et assistance personnalisée",
+    "professionalismDesc": "Disponibilité et satisfaction client",
     "coverage": "Couverture",
     "coverageDesc": "Services de transport nationaux et internationaux"
   },
   "services": {
     "title": "Nos Services",
-    "subtitle": "Solutions de transport complètes et personnalisées pour chaque besoin logistique. De l'expédition locale aux livraisons internationales.",
+    "subtitle": "Solutions de transport complètes pour chaque besoin logistique.",
     "national": "Transport National",
-    "nationalDesc": "Service de transport de marchandises dans toute l'Italie avec des livraisons rapides et sécurisées. Couverture complète dans toutes les régions.",
+    "nationalDesc": "Transport de marchandises dans toute l'Italie, avec départ et destination dans les frontières nationales.",
     "international": "Transport International",
-    "internationalDesc": "Expéditions dans toute l'Europe avec gestion douanière complète. Service de porte à porte garanti.",
+    "internationalDesc": "Services de transport en Europe, utilisant différents modes, y compris les trains et les navires.",
     "refrigerated": "Transport Frigorifique",
-    "refrigeratedDesc": "Transport à température contrôlée pour produits alimentaires et pharmaceutiques. Certification ATP.",
+    "refrigeratedDesc": "Transport à température contrôlée pour produits alimentaires et pharmaceutiques.",
     "oversized": "Charges Hors Gabarit",
-    "oversizedDesc": "Transport de marchandises volumineuses ou lourdes avec véhicules spécialisés et escorte si nécessaire.",
+    "oversizedDesc": "Transport de marchandises volumineuses ou lourdes avec véhicules spécialisés.",
     "logistics": "Logistique et Entrepôt",
-    "logisticsDesc": "Services de stockage, préparation de commandes, emballage et gestion des stocks pour optimiser votre chaîne d'approvisionnement.",
+    "logisticsDesc": "Services de stockage et gestion des stocks pour optimiser votre chaîne d'approvisionnement.",
     "adr": "Transport ADR",
-    "adrDesc": "Transport de marchandises dangereuses avec personnel certifié ADR et véhicules conformes aux réglementations.",
+    "adrDesc": "Transport de marchandises dangereuses avec personnel certifié ADR.",
     "needQuote": "Besoin d'un Devis?",
     "needQuoteDesc": "Contactez-nous aujourd'hui pour un devis gratuit et sans engagement. Notre équipe est prête à vous aider.",
     "requestQuote": "Demander un Devis",
     "contactUs": "Contactez-nous",
-    "delivery24": "Livraison 24-48h",
+    "delivery24": "Livraison rapide",
     "realTimeTracking": "Suivi en temps réel",
     "insuranceIncluded": "Assurance incluse",
-    "euCoverage": "Couverture UE",
+    "euCoverage": "Couverture Européenne",
     "customsProcedures": "Procédures douanières",
     "certifiedPartners": "Partenaires certifiés",
     "constantTemp": "Température constante",
