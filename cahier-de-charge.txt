@@ -1,0 +1,224 @@
+1. 🎯 Project Overview
+
+Redesign of the SGH Trasporti website to improve its functionality, modernize its appearance, and provide a complete platform for transport management and client interaction.
+The objective is to build a digital ecosystem that reflects professionalism, efficiency, and trust while offering clients convenient digital tools (booking, tracking, customer portal).
+
+2. 👥 Target Audience
+
+B2B clients: Companies needing freight, logistics, or delivery services.
+
+B2C clients: Individuals or small businesses seeking transport solutions.
+
+Internal partners & drivers: Employees accessing assignments, routes, and updates.
+
+3. ⚙️ Functional Requirements
+A. Public Website (Client Side)
+
+Homepage
+
+Modern hero section with dynamic visuals (trucks, road, logistics theme).
+
+Quick “Get a Quote” and “Book Transport” buttons.
+
+Animated counters (trucks, destinations, clients).
+
+Testimonials and certification logos.
+
+About Us
+
+Company story, mission, and values.
+
+Interactive map showing service coverage.
+
+Services
+
+Transport and logistics services (local, national, refrigerated, oversized, etc.).
+
+Each with images, icons, and specifications.
+
+Downloadable company brochure (PDF).
+
+Online Quote / Booking Form
+
+Smart, multi-step form with origin, destination, package details, and pickup date.
+
+Automatic confirmation email and admin notification.
+
+Price estimation feature (manual or algorithmic).
+
+Package Tracking
+
+Client enters tracking code to view real-time shipment status.
+
+Integrated map (Google Maps / Leaflet).
+
+Displays current location, ETA, and contact info.
+
+Fleet & Gallery
+
+Showcase trucks, equipment, and drivers with specifications.
+
+Clean photo gallery layout with filters.
+
+Careers Section
+
+Application form for drivers or logistics staff (CV upload).
+
+Admin dashboard integration for applications.
+
+Contact Page
+
+Smart form with reCAPTCHA.
+
+Embedded Google Map and direct WhatsApp/phone buttons.
+
+Multilingual Support
+
+Languages: Italian 🇮🇹, English 🇬🇧, French 🇫🇷.
+
+Language switcher in navigation bar.
+
+B. Admin Dashboard (Back Office)
+
+Dashboard Overview
+
+KPIs: active shipments, pending quotes, client count, fleet status.
+
+Real-time map with active routes.
+
+Bookings & Quotes Management
+
+View and confirm new bookings.
+
+Update shipment statuses (pending, in transit, delivered).
+
+Export data (PDF, Excel).
+
+Fleet Management
+
+Add/edit trucks with photos, capacity, maintenance info.
+
+Assign vehicles to drivers and routes.
+
+Clients & Users
+
+Manage registered clients, booking history, and contact info.
+
+Email alerts for updates.
+
+Job Applications
+
+Review candidate details and uploaded CVs.
+
+Filter by job role and export applications.
+
+Content Management (CMS)
+
+Update texts, images, and news posts easily.
+
+Settings
+
+Manage company info, SEO metadata, and user roles.
+
+4. 🧩 Non-Functional Requirements
+
+Performance: Optimized loading (<2 seconds).
+
+Security: HTTPS, data validation, and JWT authentication.
+
+SEO: Structured metadata, sitemap, optimized URLs.
+
+Responsive Design: Fully adaptive for desktop, tablet, and mobile.
+
+Accessibility: WCAG standards for colors, contrast, and legibility.
+
+5. 🎨 Design & UX Guidelines
+
+Style: Modern, clean, professional.
+
+Colors: Blue, white, and metallic gray (transport identity).
+
+Typography: Sans-serif (Poppins, Inter, or Roboto).
+
+Layout: Grid-based with soft animations (Framer Motion, GSAP).
+
+Imagery: Real photos of trucks, team, and warehouse for authenticity.
+
+6. 🧠 Technical Stack Recommendations
+Layer	Technology
+Frontend	React (Next.js for SEO) + TailwindCSS
+Backend	Node.js (Express.js or NestJS)
+Database	MongoDB
+Admin Dashboard	React + Material UI / Shadcn UI
+Hosting	Vercel (frontend) + Render / AWS / Railway (backend)
+APIs	REST or GraphQL
+Security	JWT, bcrypt, HTTPS, reCAPTCHA
+Optional	Google Maps API, Nodemailer, Stripe (payments)
+7. ⏰ Project Timeline
+Phase	Duration	Deliverables
+1. Analysis & Design	1 week	Wireframes, UI mockups
+2. Frontend Development	2–3 weeks	Responsive pages
+3. Backend & Dashboard	2 weeks	APIs, database, admin interface
+4. Testing	1 week	QA, bug fixing
+5. Deployment	1 week	Launch & optimization
+Total	6–8 weeks	Fully functional platform
+8. 🚀 Future Expansion Ideas (Enhanced Version)
+1. Real-Time GPS Tracking
+
+Integrate GPS tracking (Google Maps API, Traccar, or Geotab).
+
+Live truck coordinates sent to backend.
+
+Admin and clients see:
+
+Vehicle location in real time.
+
+Estimated delivery time and route path.
+
+Delivery progress statuses.
+
+Optional: fleet distribution heatmap.
+
+2. Customer Portal
+
+Secure login with JWT.
+
+Dashboard showing:
+
+Booking and invoice history.
+
+Shipment tracking with live updates.
+
+Downloadable invoices (PDF).
+
+Quick booking request form.
+
+Automatic email notifications for status changes.
+
+3. Chatbot / Live Chat Support
+
+AI chatbot for FAQs (booking, pricing, routes).
+
+Integrated live chat with WhatsApp or custom support tool.
+
+Available on all pages (desktop & mobile).
+
+Admin can view chat logs and responses.
+
+4. Mobile App (React Native)
+
+Cross-platform mobile app (Android/iOS).
+
+Main features:
+
+Live shipment tracking.
+
+Push notifications for updates.
+
+Booking and payment integration.
+
+Digital signatures and document upload.
+
+Separate dashboards for clients and drivers.
+
+Uses the same backend (REST or GraphQL API).
