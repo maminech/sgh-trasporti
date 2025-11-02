@@ -20,7 +20,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  swcMinify: true,
+  // ...existing code...
 };
 
 module.exports = withNextIntl(nextConfig);
