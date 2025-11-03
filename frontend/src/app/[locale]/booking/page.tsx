@@ -52,24 +52,20 @@ export default function BookingPage() {
             address: formData.pickupAddress,
             city: formData.pickupCity,
             postalCode: formData.pickupPostal,
-            country: 'Italia'
+            country: 'Italy'
           },
           destination: {
             address: formData.deliveryAddress,
             city: formData.deliveryCity,
             postalCode: formData.deliveryPostal,
-            country: 'Italia'
+            country: 'Italy'
           },
           pickupDate: formData.pickupDate,
           packageDetails: {
             type: formData.packageType || 'standard',
-            weight: parseInt(formData.weight),
+            weight: parseFloat(formData.weight) || 0,
             description: formData.specialInstructions,
-            dimensions: formData.dimensions ? {
-              length: 100,
-              width: 80,
-              height: 120
-            } : undefined,
+            quantity: 1,
           },
           notes: formData.specialInstructions
         };
@@ -292,11 +288,11 @@ export default function BookingPage() {
                       onChange={(e) => setFormData({...formData, packageType: e.target.value})}
                     >
                       <option value="">{t('selectType')}</option>
-                      <option value="pallet">{t('pallet')}</option>
-                      <option value="boxes">{t('boxes')}</option>
-                      <option value="bulk">{t('bulk')}</option>
+                      <option value="standard">Standard</option>
                       <option value="refrigerated">{t('refrigeratedCargo')}</option>
-                      <option value="other">Altro</option>
+                      <option value="fragile">Fragile</option>
+                      <option value="oversized">Oversized</option>
+                      <option value="hazardous">Hazardous</option>
                     </select>
                   </div>
 
