@@ -112,18 +112,18 @@ export default function QuotesPage() {
                 {quotes.map((quote: any) => (
                   <tr key={quote._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{quote.name}</div>
-                      <div className="text-sm text-gray-500">{quote.email}</div>
+                      <div className="text-sm font-medium text-gray-900">{quote.customerInfo?.name}</div>
+                      <div className="text-sm text-gray-500">{quote.customerInfo?.email}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{quote.origin}</div>
-                      <div className="text-sm text-gray-500">→ {quote.destination}</div>
+                      <div className="text-sm text-gray-900">{quote.origin?.city}, {quote.origin?.country}</div>
+                      <div className="text-sm text-gray-500">→ {quote.destination?.city}, {quote.destination?.country}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {quote.serviceType}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {quote.weight} kg
+                      {quote.packageDetails?.weight ? `${quote.packageDetails.weight} kg` : 'N/A'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadge(quote.status)}`}>
