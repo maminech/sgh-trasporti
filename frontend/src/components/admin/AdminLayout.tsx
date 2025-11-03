@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-import { FaTruck, FaSignOutAlt, FaHome, FaBox, FaUsers, FaClipboardList, FaBriefcase, FaEnvelope, FaBars, FaTimes } from 'react-icons/fa';
+import { FaTruck, FaSignOutAlt, FaHome, FaBox, FaUsers, FaClipboardList, FaBriefcase, FaEnvelope, FaBars, FaTimes, FaGlobe } from 'react-icons/fa';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -13,9 +13,25 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [showLangMenu, setShowLangMenu] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const params = useParams();
   const locale = params.locale as string || 'it';
+
+  const languages = [
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  ];
+
+  const currentLanguage = languages.find(lang => lang.code === locale) || languages[0];
+
+  const switchLanguage = (newLocale: string) => {
+    const newPath = pathname?.replace(`/${locale}`, `/${newLocale}`) || `/${newLocale}`;
+    setShowLangMenu(false);
+    router.push(newPath);
+  };
 
   useEffect(() => {
     const userCookie = Cookies.get('user');
@@ -109,6 +125,48 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </button>
 
             <div className="flex items-center space-x-4 ml-auto">
+              {/* Language Switcher */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowLangMenu(!showLangMenu)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
+                >
+                  <FaGlobe className="text-gray-600" />
+                  <span className="text-lg">{currentLanguage.flag}</span>
+                  <span className="hidden sm:inline text-sm font-medium text-gray-700">
+                    {currentLanguage.code.toUpperCase()}
+                  </span>
+                </button>
+
+                {/* Language Dropdown */}
+                {showLangMenu && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setShowLangMenu(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                      {languages.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => switchLanguage(lang.code)}
+                          className={`w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
+                            locale === lang.code ? 'bg-primary-50 text-primary-700' : 'text-gray-700'
+                          }`}
+                        >
+                          <span className="text-xl">{lang.flag}</span>
+                          <span className="font-medium">{lang.name}</span>
+                          {locale === lang.code && (
+                            <span className="ml-auto text-primary-600">✓</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* User Info */}
               <div className="text-right">
                 <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                 <p className="text-xs text-gray-600">{user?.email}</p>
