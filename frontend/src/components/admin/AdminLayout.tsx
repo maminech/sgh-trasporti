@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import { useTranslations } from 'next-intl';
 import { FaTruck, FaSignOutAlt, FaHome, FaBox, FaUsers, FaClipboardList, FaBriefcase, FaEnvelope, FaBars, FaTimes, FaGlobe } from 'react-icons/fa';
 
 interface AdminLayoutProps {
@@ -18,6 +19,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
   const params = useParams();
   const locale = params.locale as string || 'it';
+  const t = useTranslations('admin');
 
   const languages = [
     { code: 'it', name: 'Italiano', flag: '🇮🇹' },
@@ -57,13 +59,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   };
 
   const menuItems = [
-    { href: `/${locale}/admin/dashboard`, label: 'Dashboard', icon: FaHome },
-    { href: `/${locale}/admin/bookings`, label: 'Bookings', icon: FaBox },
-    { href: `/${locale}/admin/quotes`, label: 'Quotes', icon: FaClipboardList },
-    { href: `/${locale}/admin/fleet`, label: 'Fleet', icon: FaTruck },
-    { href: `/${locale}/admin/clients`, label: 'Clients', icon: FaUsers },
-    { href: `/${locale}/admin/applications`, label: 'Applications', icon: FaBriefcase },
-    { href: `/${locale}/admin/contacts`, label: 'Messages', icon: FaEnvelope },
+    { href: `/${locale}/admin/dashboard`, label: t('dashboard'), icon: FaHome },
+    { href: `/${locale}/admin/bookings`, label: t('bookings'), icon: FaBox },
+    { href: `/${locale}/admin/quotes`, label: t('quotes'), icon: FaClipboardList },
+    { href: `/${locale}/admin/fleet`, label: t('fleet'), icon: FaTruck },
+    { href: `/${locale}/admin/clients`, label: t('clients'), icon: FaUsers },
+    { href: `/${locale}/admin/applications`, label: t('applications'), icon: FaBriefcase },
+    { href: `/${locale}/admin/contacts`, label: t('messages'), icon: FaEnvelope },
   ];
 
   if (!user) {
@@ -107,7 +109,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-red-600 transition-colors mt-8 w-full"
           >
             <FaSignOutAlt className="text-xl" />
-            <span>Logout</span>
+            <span>{t('logout')}</span>
           </button>
         </div>
       </aside>

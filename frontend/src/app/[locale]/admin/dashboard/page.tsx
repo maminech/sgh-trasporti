@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { api } from '@/lib/api';
 import { FaTruck, FaBox, FaUsers, FaClipboardList, FaChartLine } from 'react-icons/fa';
@@ -10,6 +11,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const t = useTranslations('admin');
 
   useEffect(() => {
     fetchDashboardStats();
@@ -38,28 +40,28 @@ export default function AdminDashboard() {
 
   const statCards = [
     {
-      title: 'Active Bookings',
+      title: t('activeBookings'),
       value: stats?.stats.activeBookings || 0,
       icon: FaBox,
       color: 'bg-blue-500',
       change: '+12%',
     },
     {
-      title: 'Total Clients',
+      title: t('totalClients'),
       value: stats?.stats.totalClients || 0,
       icon: FaUsers,
       color: 'bg-green-500',
       change: '+8%',
     },
     {
-      title: 'Available Vehicles',
+      title: t('availableVehicles'),
       value: stats?.stats.availableVehicles || 0,
       icon: FaTruck,
       color: 'bg-purple-500',
       change: '+5%',
     },
     {
-      title: 'Pending Quotes',
+      title: t('pendingQuotes'),
       value: stats?.stats.pendingQuotes || 0,
       icon: FaClipboardList,
       color: 'bg-orange-500',
@@ -72,8 +74,8 @@ export default function AdminDashboard() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back! Here's what's happening today.</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('dashboard')}</h1>
+          <p className="text-gray-600 mt-2">{t('welcomeBack')}</p>
         </div>
 
         {/* Stats Grid */}
@@ -84,7 +86,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-gray-600 text-sm font-medium">{stat.title}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
-                  <p className="text-green-600 text-sm mt-2">{stat.change} from last month</p>
+                  <p className="text-green-600 text-sm mt-2">{stat.change} {t('fromLastMonth')}</p>
                 </div>
                 <div className={`${stat.color} w-16 h-16 rounded-full flex items-center justify-center`}>
                   <stat.icon className="text-white text-2xl" />
@@ -96,15 +98,15 @@ export default function AdminDashboard() {
 
         {/* Recent Bookings */}
         <div className="card">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Bookings</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">{t('recentBookings')}</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Tracking Code</th>
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Route</th>
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Status</th>
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Date</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('trackingCode')}</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('route')}</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('status')}</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('date')}</th>
                 </tr>
               </thead>
               <tbody>
