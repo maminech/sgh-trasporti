@@ -73,9 +73,12 @@ export default function BookingPage() {
         // Submit booking to API
         const response: any = await api.bookings.create(bookingData);
         
-        if (response && response.data) {
+        // Response structure: { success: true, data: { trackingCode, ... } }
+        if (response.success && response.data && response.data.trackingCode) {
           setTrackingCode(response.data.trackingCode);
           setSubmitted(true);
+        } else {
+          throw new Error('Invalid response format');
         }
       } catch (err: any) {
         console.error('Booking error:', err);
