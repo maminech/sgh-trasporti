@@ -73,7 +73,7 @@ export default function BookingPage() {
         // Submit booking to API
         const response: any = await api.bookings.create(bookingData);
         
-        if (response.success) {
+        if (response && response.data) {
           setTrackingCode(response.data.trackingCode);
           setSubmitted(true);
         }
