@@ -327,6 +327,7 @@
     "specialInstructions": "Special instructions for pickup or delivery...",
     "contactDetails": "Your Contact Details",
     "fullName": "Full Name",
+    "phone": "Phone",
     "confirmationNote": "You will receive a confirmation email with your booking details and tracking code to follow your transport in real-time.",
     "back": "Back",
     "continue": "Continue",
