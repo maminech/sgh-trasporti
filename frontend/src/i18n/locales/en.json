@@ -363,6 +363,8 @@
     "urgentService": "Urgent Service (delivery within 24-48h)",
     "yourDetails": "Your Details",
     "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
     "company": "Company",
     "additionalDetails": "Additional Details",
     "additionalDetailsPlaceholder": "Provide any additional details about the transport...",
