@@ -81,6 +81,7 @@ class ApiClient {
     getById: (id: string) => this.client.get(`/quotes/${id}`),
     update: (id: string, data: any) => this.client.put(`/quotes/${id}`, data),
     delete: (id: string) => this.client.delete(`/quotes/${id}`),
+    respond: (id: string, data: any) => this.client.post(`/quotes/${id}/respond`, data),
   };
 
   // Fleet endpoints

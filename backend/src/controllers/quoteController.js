@@ -1,5 +1,5 @@
 const Quote = require('../models/Quote');
-const { sendQuoteConfirmation, notifyAdminNewQuote } = require('../services/emailService');
+const { sendQuoteConfirmation, notifyAdminNewQuote, sendQuoteResponse } = require('../services/emailService');
 
 // @desc    Create quote request
 // @route   POST /api/quotes
@@ -123,6 +123,50 @@ exports.deleteQuote = async (req, res, next) => {
     res.json({
       success: true,
       message: 'Quote deleted successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Send quote response to customer
+// @route   POST /api/quotes/:id/respond
+// @access  Private/Admin
+exports.respondToQuote = async (req, res, next) => {
+  try {
+    const { amount, currency, validUntil, notes } = req.body;
+
+    const quote = await Quote.findById(req.params.id);
+
+    if (!quote) {
+      return res.status(404).json({
+        success: false,
+        message: 'Quote not found',
+      });
+    }
+
+    // Update quote with pricing information
+    quote.quotedPrice = {
+      amount,
+      currency: currency || 'EUR',
+      validUntil: validUntil || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default 7 days
+    };
+    
+    if (notes) {
+      quote.notes = notes;
+    }
+    
+    quote.status = 'quoted';
+    
+    await quote.save();
+
+    // Send quote response email to customer
+    await sendQuoteResponse(quote.customerInfo.email, quote);
+
+    res.json({
+      success: true,
+      message: 'Quote response sent successfully',
+      data: quote,
     });
   } catch (error) {
     next(error);

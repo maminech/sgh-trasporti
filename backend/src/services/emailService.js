@@ -204,3 +204,70 @@ exports.notifyAdminNewApplication = async (application) => {
     console.error('❌ Admin notification failed:', error);
   }
 };
+
+// Send quote response to customer
+exports.sendQuoteResponse = async (email, quote) => {
+  const transporter = createTransporter();
+
+  const validUntilDate = quote.quotedPrice?.validUntil 
+    ? new Date(quote.quotedPrice.validUntil).toLocaleDateString() 
+    : 'N/A';
+
+  const mailOptions = {
+    from: process.env.EMAIL_FROM,
+    to: email,
+    subject: 'Your Quote is Ready - SGH Trasporti',
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1e40af;">Your Transportation Quote</h2>
+        <p>Dear ${quote.customerInfo.name},</p>
+        <p>Thank you for your patience. We are pleased to provide you with a quote for your transportation needs.</p>
+        
+        <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #1e40af;">Route Details</h3>
+          <p><strong>From:</strong> ${quote.origin.address ? quote.origin.address + ', ' : ''}${quote.origin.city}, ${quote.origin.country}</p>
+          <p><strong>To:</strong> ${quote.destination.address ? quote.destination.address + ', ' : ''}${quote.destination.city}, ${quote.destination.country}</p>
+          <p><strong>Service Type:</strong> ${quote.serviceType.toUpperCase()}</p>
+          <p><strong>Package Type:</strong> ${quote.packageDetails.type}</p>
+          ${quote.packageDetails.weight ? `<p><strong>Weight:</strong> ${quote.packageDetails.weight} kg</p>` : ''}
+          ${quote.packageDetails.quantity ? `<p><strong>Quantity:</strong> ${quote.packageDetails.quantity}</p>` : ''}
+        </div>
+
+        <div style="background-color: #dcfce7; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #16a34a;">
+          <h3 style="margin-top: 0; color: #16a34a;">Quoted Price</h3>
+          <p style="font-size: 32px; font-weight: bold; color: #16a34a; margin: 10px 0;">
+            ${quote.quotedPrice.currency} ${quote.quotedPrice.amount.toFixed(2)}
+          </p>
+          <p style="margin: 5px 0;"><strong>Valid Until:</strong> ${validUntilDate}</p>
+        </div>
+
+        ${quote.notes ? `
+        <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0;">Additional Notes</h3>
+          <p>${quote.notes}</p>
+        </div>
+        ` : ''}
+        
+        <p>To proceed with this quote and book your shipment, please reply to this email or contact us at:</p>
+        <ul>
+          <li><strong>Email:</strong> ${process.env.EMAIL_FROM || 'service.sgh.trasporti@hotmail.com'}</li>
+          <li><strong>Phone:</strong> +39 XXX XXX XXXX</li>
+        </ul>
+        
+        <p style="font-size: 12px; color: #666; margin-top: 30px;">
+          This quote is valid until the date specified above. Prices may vary based on fuel costs, route changes, or additional requirements.
+        </p>
+        
+        <p style="margin-top: 30px;">Best regards,<br>SGH Trasporti Team</p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('✅ Quote response email sent to customer');
+  } catch (error) {
+    console.error('❌ Quote response email failed:', error);
+    throw error;
+  }
+};
