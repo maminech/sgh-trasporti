@@ -34,7 +34,7 @@ const invoiceSchema = new mongoose.Schema({
   booking: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Booking',
-    required: true,
+    required: false,
     index: true
   },
   customer: {
@@ -101,6 +101,10 @@ const invoiceSchema = new mongoose.Schema({
   },
   pdfUrl: {
     type: String
+  },
+  isUploaded: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

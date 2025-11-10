@@ -137,8 +137,15 @@ class ApiClient {
     create: (data: any) => this.client.post('/invoices', data),
     getAll: (params?: any) => this.client.get('/invoices', { params }),
     getById: (id: string) => this.client.get(`/invoices/${id}`),
+    getByCustomer: (customerId: string) => this.client.get(`/invoices/customer/${customerId}`),
     update: (id: string, data: any) => this.client.put(`/invoices/${id}`, data),
     delete: (id: string) => this.client.delete(`/invoices/${id}`),
+    generateAndSend: (data: any) => this.client.post('/invoices/generate-send', data),
+    uploadInvoice: (formData: FormData) => this.client.post('/invoices/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
     downloadPDF: (id: string) => this.client.get(`/invoices/${id}/pdf`, {
       responseType: 'blob'
     }),

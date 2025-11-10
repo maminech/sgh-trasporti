@@ -203,7 +203,7 @@ export default function CustomerDashboard({ params }: DashboardProps) {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <a
             href={`/${locale}/booking`}
             className="bg-blue-600 text-white p-6 rounded-lg shadow hover:bg-blue-700 transition-colors"
@@ -211,6 +211,15 @@ export default function CustomerDashboard({ params }: DashboardProps) {
             <FiPackage size={32} className="mb-3" />
             <h3 className="text-xl font-bold mb-2">{t('newBooking')}</h3>
             <p className="text-blue-100">{t('newBookingDesc')}</p>
+          </a>
+
+          <a
+            href={`/${locale}/portal/invoices`}
+            className="bg-purple-600 text-white p-6 rounded-lg shadow hover:bg-purple-700 transition-colors"
+          >
+            <FiFileText size={32} className="mb-3" />
+            <h3 className="text-xl font-bold mb-2">View Invoices</h3>
+            <p className="text-purple-100">Access and download all your invoices</p>
           </a>
 
           <a

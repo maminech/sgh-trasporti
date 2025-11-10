@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 // Create transporter
 const createTransporter = () => {
-  return nodemailer.createTransport({
+  return nodemailer.createTransporter({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
     secure: false,
@@ -268,6 +269,100 @@ exports.sendQuoteResponse = async (email, quote) => {
     console.log('✅ Quote response email sent to customer');
   } catch (error) {
     console.error('❌ Quote response email failed:', error);
+    throw error;
+  }
+};
+
+// Send invoice email with PDF attachment
+exports.sendInvoiceEmail = async (email, customerName, invoice, pdfPath) => {
+  const transporter = createTransporter();
+
+  const mailOptions = {
+    from: process.env.EMAIL_FROM || 'service.sgh.trasporti@hotmail.com',
+    to: email,
+    subject: `Invoice ${invoice.invoiceNumber} - SGH Trasporti`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #1e40af; color: white; padding: 30px; text-align: center;">
+          <h1 style="margin: 0;">SGH TRASPORTI</h1>
+          <p style="margin: 10px 0 0 0;">Your Transport Solution</p>
+        </div>
+        
+        <div style="padding: 30px; background-color: #f9fafb;">
+          <h2 style="color: #1e40af;">Invoice ${invoice.invoiceNumber}</h2>
+          <p>Dear ${customerName},</p>
+          <p>Please find attached your invoice for the transport service provided.</p>
+          
+          <div style="background-color: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #1e40af;">
+            <h3 style="margin-top: 0; color: #1e40af;">Invoice Summary</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 8px 0;"><strong>Invoice Number:</strong></td>
+                <td style="padding: 8px 0; text-align: right;">${invoice.invoiceNumber}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0;"><strong>Issue Date:</strong></td>
+                <td style="padding: 8px 0; text-align: right;">${new Date(invoice.issueDate).toLocaleDateString('it-IT')}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0;"><strong>Due Date:</strong></td>
+                <td style="padding: 8px 0; text-align: right;">${new Date(invoice.dueDate).toLocaleDateString('it-IT')}</td>
+              </tr>
+              <tr style="border-top: 2px solid #e5e7eb;">
+                <td style="padding: 12px 0;"><strong style="font-size: 16px;">Total Amount:</strong></td>
+                <td style="padding: 12px 0; text-align: right;"><strong style="font-size: 18px; color: #1e40af;">€${invoice.totalAmount.toFixed(2)}</strong></td>
+              </tr>
+            </table>
+          </div>
+          
+          <div style="background-color: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #1e40af;">Payment Information</h3>
+            <p style="margin: 5px 0;"><strong>Payment Method:</strong> Bank Transfer</p>
+            <p style="margin: 5px 0;"><strong>IBAN:</strong> IT60 X054 2811 1010 0000 0123 456</p>
+            <p style="margin: 5px 0;"><strong>BIC/SWIFT:</strong> BPMOIT22XXX</p>
+            <p style="margin: 15px 0 5px 0; font-size: 14px;"><em>Please include invoice number ${invoice.invoiceNumber} in the payment reference.</em></p>
+          </div>
+          
+          ${invoice.notes ? `
+          <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0;"><strong>Notes:</strong> ${invoice.notes}</p>
+          </div>
+          ` : ''}
+          
+          <p style="margin-top: 30px;">The complete invoice is attached as a PDF file to this email.</p>
+          
+          <p>If you have any questions or need assistance, please don't hesitate to contact us:</p>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin: 5px 0;">📧 Email: ${process.env.EMAIL_FROM || 'service.sgh.trasporti@hotmail.com'}</li>
+            <li style="margin: 5px 0;">📞 Phone: +39 02 1234 5678</li>
+          </ul>
+          
+          <p style="margin-top: 30px;">Thank you for choosing SGH Trasporti!</p>
+          
+          <p style="color: #666; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            This is an automated message. Please do not reply directly to this email.
+          </p>
+        </div>
+        
+        <div style="background-color: #1e40af; color: white; padding: 20px; text-align: center;">
+          <p style="margin: 0; font-size: 14px;">© ${new Date().getFullYear()} SGH Trasporti. All rights reserved.</p>
+        </div>
+      </div>
+    `,
+    attachments: [
+      {
+        filename: `invoice-${invoice.invoiceNumber}.pdf`,
+        path: pdfPath,
+        contentType: 'application/pdf'
+      }
+    ]
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Invoice email sent to ${email}`);
+  } catch (error) {
+    console.error('❌ Invoice email failed:', error);
     throw error;
   }
 };

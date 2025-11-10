@@ -2,14 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { api } from '@/lib/api';
 import { FaTruck, FaEdit, FaTrash, FaPlus, FaTimes } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function FleetPage() {
+  const t = useTranslations('admin');
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<any>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     type: 'van',
@@ -74,8 +80,10 @@ export default function FleetPage() {
     try {
       if (editingVehicle) {
         await api.fleet.update(editingVehicle._id, formData);
+        alert('Vehicle updated successfully!');
       } else {
         await api.fleet.create(formData);
+        alert('Vehicle added successfully!');
       }
       setShowModal(false);
       fetchVehicles();
@@ -85,14 +93,26 @@ export default function FleetPage() {
     }
   };
 
-  const deleteVehicle = async (id: string) => {
-    if (confirm('Are you sure you want to delete this vehicle?')) {
-      try {
-        await api.fleet.delete(id);
-        fetchVehicles();
-      } catch (error) {
-        console.error('Error deleting vehicle:', error);
-      }
+  const openDeleteConfirm = (id: string) => {
+    setVehicleToDelete(id);
+    setShowDeleteConfirm(true);
+  };
+
+  const deleteVehicle = async () => {
+    if (!vehicleToDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      await api.fleet.delete(vehicleToDelete);
+      setShowDeleteConfirm(false);
+      setVehicleToDelete(null);
+      fetchVehicles();
+      alert('Vehicle deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting vehicle:', error);
+      alert('Failed to delete vehicle. Please try again.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -109,23 +129,23 @@ export default function FleetPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Fleet Management</h1>
+          <h1 className="text-3xl font-bold">{t('fleet')}</h1>
           <button onClick={openAddModal} className="btn-primary flex items-center gap-2">
-            <FaPlus /> Add Vehicle
+            <FaPlus /> {t('vehicle')}
           </button>
         </div>
 
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading fleet...</p>
+            <p className="mt-4 text-gray-600">{t('loading')}</p>
           </div>
         ) : vehicles.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <FaTruck className="mx-auto text-6xl text-gray-300 mb-4" />
-            <p className="text-gray-600 text-lg">No vehicles in fleet</p>
+            <p className="text-gray-600 text-lg">{t('noDataFound')}</p>
             <button className="mt-4 btn-primary flex items-center gap-2 mx-auto">
-              <FaPlus /> Add First Vehicle
+              <FaPlus /> {t('vehicle')}
             </button>
           </div>
         ) : (
@@ -148,11 +168,11 @@ export default function FleetPage() {
                   
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">License Plate:</span>
+                      <span className="text-gray-600">{t('plateNumber')}:</span>
                       <span className="font-semibold">{vehicle.licensePlate}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Capacity:</span>
+                      <span className="text-gray-600">{t('capacity')}:</span>
                       <span className="font-semibold">
                         {vehicle.capacity?.weight ? `${vehicle.capacity.weight} kg` : ''}
                         {vehicle.capacity?.weight && vehicle.capacity?.volume ? ' / ' : ''}
@@ -161,7 +181,7 @@ export default function FleetPage() {
                     </div>
                     {vehicle.pricePerKm && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Price/km:</span>
+                        <span className="text-gray-600">{t('price')}/km:</span>
                         <span className="font-semibold">€{vehicle.pricePerKm}</span>
                       </div>
                     )}
@@ -169,7 +189,7 @@ export default function FleetPage() {
 
                   {vehicle.features && vehicle.features.length > 0 && (
                     <div className="mb-4">
-                      <p className="text-sm font-semibold text-gray-700 mb-2">Features:</p>
+                      <p className="text-sm font-semibold text-gray-700 mb-2">{t('description')}:</p>
                       <div className="flex flex-wrap gap-2">
                         {vehicle.features.map((feature: string, index: number) => (
                           <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
@@ -185,13 +205,13 @@ export default function FleetPage() {
                       onClick={() => openEditModal(vehicle)}
                       className="flex-1 btn-secondary flex items-center justify-center gap-2"
                     >
-                      <FaEdit /> Edit
+                      <FaEdit /> {t('edit')}
                     </button>
                     <button 
-                      onClick={() => deleteVehicle(vehicle._id)}
+                      onClick={() => openDeleteConfirm(vehicle._id)}
                       className="flex-1 bg-red-100 text-red-700 hover:bg-red-200 px-4 py-2 rounded-lg flex items-center justify-center gap-2"
                     >
-                      <FaTrash /> Delete
+                      <FaTrash /> {t('delete')}
                     </button>
                   </div>
                 </div>
@@ -206,7 +226,7 @@ export default function FleetPage() {
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b flex justify-between items-center">
                 <h2 className="text-2xl font-bold">
-                  {editingVehicle ? 'Edit Vehicle' : 'Add New Vehicle'}
+                  {editingVehicle ? t('edit') : t('vehicle')}
                 </h2>
                 <button onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-700">
                   <FaTimes size={24} />
@@ -216,7 +236,7 @@ export default function FleetPage() {
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Vehicle Name *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('vehicle')} *</label>
                     <input
                       type="text"
                       required
@@ -227,7 +247,7 @@ export default function FleetPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Type *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('vehicleType')} *</label>
                     <select
                       required
                       className="input-field"
@@ -242,7 +262,7 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">License Plate *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('plateNumber')} *</label>
                     <input
                       type="text"
                       required
@@ -253,7 +273,7 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Brand *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('company')} *</label>
                     <input
                       type="text"
                       required
@@ -264,7 +284,7 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Model *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('model')} *</label>
                     <input
                       type="text"
                       required
@@ -275,7 +295,7 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Year *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('date')} *</label>
                     <input
                       type="number"
                       required
@@ -288,7 +308,7 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Weight Capacity (kg) *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('weight')} (kg) *</label>
                     <input
                       type="number"
                       required
@@ -303,7 +323,7 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Volume Capacity (m³) *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('capacity')} (m³) *</label>
                     <input
                       type="number"
                       required
@@ -318,36 +338,52 @@ export default function FleetPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Status *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('status')} *</label>
                     <select
                       required
                       className="input-field"
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                     >
-                      <option value="available">Available</option>
-                      <option value="in-use">In Use</option>
-                      <option value="maintenance">Maintenance</option>
+                      <option value="available">{t('available')}</option>
+                      <option value="in-use">{t('inUse')}</option>
+                      <option value="maintenance">{t('maintenance')}</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="flex gap-3 pt-4">
                   <button type="submit" className="flex-1 btn-primary">
-                    {editingVehicle ? 'Update Vehicle' : 'Add Vehicle'}
+                    {editingVehicle ? t('save') : t('vehicle')}
                   </button>
                   <button 
                     type="button" 
                     onClick={() => setShowModal(false)} 
                     className="flex-1 btn-secondary"
                   >
-                    Cancel
+                    {t('cancel')}
                   </button>
                 </div>
               </form>
             </div>
           </div>
         )}
+
+        {/* Delete Confirmation Dialog */}
+        <ConfirmDialog
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setVehicleToDelete(null);
+          }}
+          onConfirm={deleteVehicle}
+          title="Delete Vehicle"
+          message="Are you sure you want to delete this vehicle? This action cannot be undone and will permanently remove the vehicle from your fleet."
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
       </div>
     </AdminLayout>
   );

@@ -1,6 +1,8 @@
 const Invoice = require('../models/Invoice');
 const Booking = require('../models/Booking');
 const User = require('../models/User');
+const InvoicePDFService = require('../services/invoicePDFService');
+const emailService = require('../services/emailService');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
@@ -398,6 +400,231 @@ exports.getInvoiceStats = async (req, res, next) => {
     });
 
   } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Generate and send invoice for a booking
+ * @route   POST /api/invoices/generate-send
+ * @access  Private (Admin only)
+ */
+exports.generateAndSendInvoice = async (req, res, next) => {
+  try {
+    const { bookingId, items, dueDate, notes, paymentMethod } = req.body;
+
+    // Get booking with customer details
+    const booking = await Booking.findById(bookingId).populate('customer');
+    
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    // Check if invoice already exists
+    let invoice = await Invoice.findOne({ booking: bookingId });
+    
+    if (invoice) {
+      // If invoice exists, update status to sent and regenerate PDF
+      invoice.status = 'sent';
+    } else {
+      // Calculate totals
+      let subtotal = 0;
+      let taxAmount = 0;
+
+      const invoiceItems = items.map(item => {
+        const itemTotal = item.quantity * item.unitPrice;
+        const itemTax = itemTotal * (item.taxRate || 22) / 100;
+        
+        subtotal += itemTotal;
+        taxAmount += itemTax;
+
+        return {
+          ...item,
+          total: itemTotal
+        };
+      });
+
+      const totalAmount = subtotal + taxAmount;
+
+      // Create new invoice
+      invoice = await Invoice.create({
+        booking: bookingId,
+        customer: booking.customer._id,
+        customerDetails: {
+          name: booking.customerInfo?.name || booking.customer.name,
+          email: booking.customerInfo?.email || booking.customer.email,
+          phone: booking.customerInfo?.phone || booking.customer.phone,
+          company: booking.customerInfo?.company || booking.customer.company,
+          address: booking.origin || booking.customer.address,
+          vatNumber: booking.customer.vatNumber,
+          fiscalCode: booking.customer.fiscalCode
+        },
+        items: invoiceItems,
+        subtotal,
+        taxAmount,
+        totalAmount,
+        dueDate: dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        notes,
+        paymentMethod: paymentMethod || 'bank_transfer',
+        status: 'sent'
+      });
+    }
+
+    // Generate PDF
+    const pdfFileName = `invoice-${invoice.invoiceNumber}.pdf`;
+    const pdfPath = await InvoicePDFService.generateInvoicePDF(invoice, pdfFileName);
+
+    // Update invoice with PDF URL
+    invoice.pdfUrl = `/uploads/invoices/${pdfFileName}`;
+    await invoice.save();
+
+    // Send email with PDF attachment
+    const customerEmail = invoice.customerDetails.email;
+    const customerName = invoice.customerDetails.name;
+
+    await emailService.sendInvoiceEmail(
+      customerEmail,
+      customerName,
+      invoice,
+      pdfPath
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Invoice generated and sent successfully',
+      data: invoice
+    });
+
+  } catch (error) {
+    console.error('Error generating/sending invoice:', error);
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get invoices by customer
+ * @route   GET /api/invoices/customer/:customerId
+ * @access  Private (Admin only)
+ */
+exports.getInvoicesByCustomer = async (req, res, next) => {
+  try {
+    const { customerId } = req.params;
+
+    const invoices = await Invoice.find({ customer: customerId })
+      .populate('booking', 'trackingCode origin destination status')
+      .sort({ issueDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: invoices.length,
+      data: invoices
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Upload pre-made invoice PDF
+ * @route   POST /api/invoices/upload
+ * @access  Private (Admin only)
+ */
+exports.uploadInvoice = async (req, res, next) => {
+  try {
+    const { customerId, notes } = req.body;
+
+    if (!req.files || !req.files.invoice) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Please upload an invoice file' 
+      });
+    }
+
+    const invoiceFile = req.files.invoice;
+
+    // Validate file type
+    if (invoiceFile.mimetype !== 'application/pdf') {
+      return res.status(400).json({
+        success: false,
+        message: 'Only PDF files are allowed'
+      });
+    }
+
+    // Validate file size (10MB max)
+    if (invoiceFile.size > 10 * 1024 * 1024) {
+      return res.status(400).json({
+        success: false,
+        message: 'File size must be less than 10MB'
+      });
+    }
+
+    // Get customer details
+    const customer = await User.findById(customerId);
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        message: 'Customer not found'
+      });
+    }
+
+    // Create uploads directory if it doesn't exist
+    const uploadsDir = path.join(__dirname, '../../uploads/invoices');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    // Generate unique filename
+    const timestamp = Date.now();
+    const fileName = `uploaded-invoice-${customerId}-${timestamp}.pdf`;
+    const filePath = path.join(uploadsDir, fileName);
+
+    // Move file to uploads directory
+    await invoiceFile.mv(filePath);
+
+    // Create invoice record
+    const invoice = await Invoice.create({
+      customer: customerId,
+      customerDetails: {
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        company: customer.company,
+        address: customer.address,
+        vatNumber: customer.vatNumber,
+        fiscalCode: customer.fiscalCode
+      },
+      items: [{
+        description: 'Uploaded invoice',
+        quantity: 1,
+        unitPrice: 0,
+        total: 0
+      }],
+      subtotal: 0,
+      taxAmount: 0,
+      totalAmount: 0,
+      pdfUrl: `/uploads/invoices/${fileName}`,
+      notes: notes || 'Uploaded invoice',
+      status: 'sent',
+      isUploaded: true
+    });
+
+    // Send email with uploaded invoice
+    await emailService.sendInvoiceEmail(
+      customer.email,
+      customer.name,
+      invoice,
+      filePath
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'Invoice uploaded and sent successfully',
+      data: invoice
+    });
+
+  } catch (error) {
+    console.error('Error uploading invoice:', error);
     next(error);
   }
 };

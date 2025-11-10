@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { api } from '@/lib/api';
 import { FaBriefcase, FaCheck, FaTimes, FaEye, FaDownload, FaTrash, FaCalendar, FaUser } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function ApplicationsPage() {
+  const t = useTranslations('admin');
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -13,6 +16,7 @@ export default function ApplicationsPage() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [applicationToDelete, setApplicationToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     fetchApplications();
@@ -46,6 +50,7 @@ export default function ApplicationsPage() {
   const handleDelete = async () => {
     if (!applicationToDelete) return;
     
+    setIsDeleting(true);
     try {
       await api.applications.delete(applicationToDelete);
       fetchApplications();
@@ -55,9 +60,12 @@ export default function ApplicationsPage() {
         setShowDetailsModal(false);
         setSelectedApplication(null);
       }
+      alert('Application deleted successfully!');
     } catch (error) {
       console.error('Error deleting application:', error);
       alert('Failed to delete application');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -456,34 +464,21 @@ export default function ApplicationsPage() {
           </div>
         )}
 
-        {/* Delete Confirmation Modal */}
-        {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-md w-full p-6">
-              <h3 className="text-xl font-bold mb-4">Confirm Delete</h3>
-              <p className="text-gray-600 mb-6">
-                Are you sure you want to delete this application? This action cannot be undone.
-              </p>
-              <div className="flex gap-3 justify-end">
-                <button
-                  onClick={() => {
-                    setShowDeleteConfirm(false);
-                    setApplicationToDelete(null);
-                  }}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Delete Confirmation Dialog */}
+        <ConfirmDialog
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setApplicationToDelete(null);
+          }}
+          onConfirm={handleDelete}
+          title="Delete Application"
+          message="Are you sure you want to delete this job application? This action cannot be undone and will permanently remove all application data."
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
       </div>
     </AdminLayout>
   );

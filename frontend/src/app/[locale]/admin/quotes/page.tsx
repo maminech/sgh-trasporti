@@ -2,15 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { api } from '@/lib/api';
 import { FaFileInvoice, FaCheck, FaTimes, FaEye, FaReply } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function QuotesPage() {
+  const t = useTranslations('admin');
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [selectedQuote, setSelectedQuote] = useState<any>(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showRejectConfirm, setShowRejectConfirm] = useState(false);
+  const [quoteToReject, setQuoteToReject] = useState<string | null>(null);
+  const [isRejecting, setIsRejecting] = useState(false);
   const [responseData, setResponseData] = useState({
     amount: '',
     currency: 'EUR',
@@ -38,8 +44,33 @@ export default function QuotesPage() {
     try {
       await api.quotes.update(id, { status });
       fetchQuotes();
+      alert('Quote status updated successfully!');
     } catch (error) {
       console.error('Error updating quote:', error);
+      alert('Failed to update quote status. Please try again.');
+    }
+  };
+
+  const openRejectConfirm = (id: string) => {
+    setQuoteToReject(id);
+    setShowRejectConfirm(true);
+  };
+
+  const rejectQuote = async () => {
+    if (!quoteToReject) return;
+    
+    setIsRejecting(true);
+    try {
+      await api.quotes.update(quoteToReject, { status: 'rejected' });
+      setShowRejectConfirm(false);
+      setQuoteToReject(null);
+      fetchQuotes();
+      alert('Quote rejected successfully!');
+    } catch (error) {
+      console.error('Error rejecting quote:', error);
+      alert('Failed to reject quote. Please try again.');
+    } finally {
+      setIsRejecting(false);
     }
   };
 
@@ -80,7 +111,7 @@ export default function QuotesPage() {
         notes: responseData.notes,
       });
       
-      alert('Quote response sent successfully to customer!');
+      alert(t('statusUpdated'));
       closeResponseModal();
       fetchQuotes();
     } catch (error) {
@@ -107,25 +138,25 @@ export default function QuotesPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Quote Requests</h1>
+          <h1 className="text-3xl font-bold">{t('quoteRequests')}</h1>
           <div className="flex gap-2">
             <button
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg ${filter === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}
             >
-              All
+              {t('all')}
             </button>
             <button
               onClick={() => setFilter('pending')}
               className={`px-4 py-2 rounded-lg ${filter === 'pending' ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}
             >
-              Pending
+              {t('pending')}
             </button>
             <button
               onClick={() => setFilter('approved')}
               className={`px-4 py-2 rounded-lg ${filter === 'approved' ? 'bg-primary-600 text-white' : 'bg-gray-200'}`}
             >
-              Approved
+              {t('approve')}
             </button>
           </div>
         </div>
@@ -133,12 +164,12 @@ export default function QuotesPage() {
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading quotes...</p>
+            <p className="mt-4 text-gray-600">{t('loading')}</p>
           </div>
         ) : quotes.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <FaFileInvoice className="mx-auto text-6xl text-gray-300 mb-4" />
-            <p className="text-gray-600 text-lg">No quotes found</p>
+            <p className="text-gray-600 text-lg">{t('noDataFound')}</p>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -146,25 +177,25 @@ export default function QuotesPage() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Customer
+                    {t('customer')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Route
+                    {t('route')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Service
+                    {t('serviceType')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Weight
+                    {t('weight')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    {t('status')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
+                    {t('date')}
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    {t('actions')}
                   </th>
                 </tr>
               </thead>
@@ -200,20 +231,20 @@ export default function QuotesPage() {
                             <button
                               onClick={() => openResponseModal(quote)}
                               className="text-blue-600 hover:text-blue-900"
-                              title="Send Quote"
+                              title={t('sendQuote')}
                             >
                               <FaReply />
                             </button>
                             <button
-                              onClick={() => updateQuoteStatus(quote._id, 'rejected')}
+                              onClick={() => openRejectConfirm(quote._id)}
                               className="text-red-600 hover:text-red-900"
-                              title="Reject"
+                              title={t('reject')}
                             >
                               <FaTimes />
                             </button>
                           </>
                         )}
-                        <button className="text-primary-600 hover:text-primary-900" title="View">
+                        <button className="text-primary-600 hover:text-primary-900" title={t('view')}>
                           <FaEye />
                         </button>
                       </div>
@@ -231,7 +262,7 @@ export default function QuotesPage() {
             <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900">Send Quote Response</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{t('sendQuote')}</h2>
                   <button
                     onClick={closeResponseModal}
                     className="text-gray-400 hover:text-gray-600"
@@ -242,30 +273,30 @@ export default function QuotesPage() {
 
                 {/* Quote Details */}
                 <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-3">Quote Request Details</h3>
+                  <h3 className="font-semibold text-gray-900 mb-3">{t('quoteRequests')}</h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-600">Customer:</p>
+                      <p className="text-gray-600">{t('customer')}:</p>
                       <p className="font-medium">{selectedQuote.customerInfo?.name}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Email:</p>
+                      <p className="text-gray-600">{t('email')}:</p>
                       <p className="font-medium">{selectedQuote.customerInfo?.email}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">From:</p>
+                      <p className="text-gray-600">{t('origin')}:</p>
                       <p className="font-medium">{selectedQuote.origin?.city}, {selectedQuote.origin?.country}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">To:</p>
+                      <p className="text-gray-600">{t('destination')}:</p>
                       <p className="font-medium">{selectedQuote.destination?.city}, {selectedQuote.destination?.country}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Service Type:</p>
+                      <p className="text-gray-600">{t('serviceType')}:</p>
                       <p className="font-medium">{selectedQuote.serviceType}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Weight:</p>
+                      <p className="text-gray-600">{t('weight')}:</p>
                       <p className="font-medium">{selectedQuote.packageDetails?.weight ? `${selectedQuote.packageDetails.weight} kg` : 'N/A'}</p>
                     </div>
                   </div>
@@ -277,7 +308,7 @@ export default function QuotesPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Quoted Price *
+                          {t('quotedPrice')} *
                         </label>
                         <input
                           type="number"
@@ -291,7 +322,7 @@ export default function QuotesPage() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Currency
+                          {t('price')}
                         </label>
                         <select
                           value={responseData.currency}
@@ -307,7 +338,7 @@ export default function QuotesPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Valid Until *
+                        {t('validUntil')} *
                       </label>
                       <input
                         type="date"
@@ -320,14 +351,14 @@ export default function QuotesPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Additional Notes (Optional)
+                        {t('notes')}
                       </label>
                       <textarea
                         rows={4}
                         value={responseData.notes}
                         onChange={(e) => setResponseData({ ...responseData, notes: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                        placeholder="Add any additional information for the customer (e.g., delivery time, special conditions, etc.)"
+                        placeholder={t('description')}
                       />
                     </div>
                   </div>
@@ -339,14 +370,14 @@ export default function QuotesPage() {
                       className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                       disabled={submitting}
                     >
-                      Cancel
+                      {t('cancel')}
                     </button>
                     <button
                       type="submit"
                       disabled={submitting}
                       className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {submitting ? 'Sending...' : 'Send Quote to Customer'}
+                      {submitting ? t('loading') : t('sendQuote')}
                     </button>
                   </div>
                 </form>
@@ -354,6 +385,22 @@ export default function QuotesPage() {
             </div>
           </div>
         )}
+
+        {/* Reject Quote Confirmation Dialog */}
+        <ConfirmDialog
+          isOpen={showRejectConfirm}
+          onClose={() => {
+            setShowRejectConfirm(false);
+            setQuoteToReject(null);
+          }}
+          onConfirm={rejectQuote}
+          title="Reject Quote"
+          message="Are you sure you want to reject this quote request? The customer will be notified of the rejection."
+          confirmText="Reject"
+          cancelText="Cancel"
+          type="warning"
+          isLoading={isRejecting}
+        />
       </div>
     </AdminLayout>
   );

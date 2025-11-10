@@ -2,14 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { api } from '@/lib/api';
 import { FaEnvelope, FaUser, FaPhone, FaCalendar, FaEye, FaTrash } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function ContactsPage() {
+  const t = useTranslations('admin');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMessage, setSelectedMessage] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -26,14 +32,26 @@ export default function ContactsPage() {
     }
   };
 
-  const deleteMessage = async (id: string) => {
-    if (confirm('Are you sure you want to delete this message?')) {
-      try {
-        await api.contact.delete(id);
-        fetchMessages();
-      } catch (error) {
-        console.error('Error deleting message:', error);
-      }
+  const openDeleteConfirm = (id: string) => {
+    setMessageToDelete(id);
+    setShowDeleteConfirm(true);
+  };
+
+  const deleteMessage = async () => {
+    if (!messageToDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      await api.contact.delete(messageToDelete);
+      setShowDeleteConfirm(false);
+      setMessageToDelete(null);
+      fetchMessages();
+      alert('Message deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting message:', error);
+      alert('Failed to delete message. Please try again.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -127,7 +145,7 @@ export default function ContactsPage() {
                           <FaEye />
                         </button>
                         <button
-                          onClick={() => deleteMessage(message._id)}
+                          onClick={() => openDeleteConfirm(message._id)}
                           className="text-red-600 hover:text-red-900"
                           title="Delete Message"
                         >
@@ -207,7 +225,7 @@ export default function ContactsPage() {
                 <button
                   onClick={() => {
                     setShowModal(false);
-                    deleteMessage(selectedMessage._id);
+                    openDeleteConfirm(selectedMessage._id);
                   }}
                   className="flex-1 bg-red-100 text-red-700 hover:bg-red-200 px-4 py-2 rounded-lg font-medium"
                 >
@@ -218,6 +236,22 @@ export default function ContactsPage() {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setMessageToDelete(null);
+        }}
+        onConfirm={deleteMessage}
+        title="Delete Message"
+        message="Are you sure you want to delete this contact message? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isLoading={isDeleting}
+      />
     </AdminLayout>
   );
 }

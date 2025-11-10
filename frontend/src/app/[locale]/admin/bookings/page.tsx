@@ -2,16 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
+import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { api } from '@/lib/api';
 import { FaEdit, FaTrash, FaEye, FaTimes } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 export default function AdminBookings() {
+  const t = useTranslations('admin');
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const [newStatus, setNewStatus] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [bookingToDelete, setBookingToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     fetchBookings();
@@ -53,18 +59,33 @@ export default function AdminBookings() {
       await api.bookings.update(selectedBooking._id, { status: newStatus });
       setShowStatusModal(false);
       fetchBookings();
+      alert('Booking status updated successfully!');
     } catch (error) {
       console.error('Error updating booking status:', error);
+      alert('Failed to update booking status. Please try again.');
     }
   };
 
-  const deleteBooking = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this booking?')) return;
+  const openDeleteConfirm = (id: string) => {
+    setBookingToDelete(id);
+    setShowDeleteConfirm(true);
+  };
+
+  const deleteBooking = async () => {
+    if (!bookingToDelete) return;
+    
+    setIsDeleting(true);
     try {
-      await api.bookings.delete(id);
+      await api.bookings.delete(bookingToDelete);
+      setShowDeleteConfirm(false);
+      setBookingToDelete(null);
       fetchBookings();
+      alert('Booking deleted successfully!');
     } catch (error) {
       console.error('Error deleting booking:', error);
+      alert('Failed to delete booking. Please try again.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -72,7 +93,7 @@ export default function AdminBookings() {
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Bookings Management</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('bookings')}</h1>
         </div>
 
         {/* Filter */}
@@ -87,7 +108,9 @@ export default function AdminBookings() {
                   : 'bg-white text-gray-700 hover:bg-gray-100'
               }`}
             >
-              {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
+              {status === 'all' ? t('all') : 
+               status === 'in_transit' ? t('inTransit') : 
+               t(status as any)}
             </button>
           ))}
         </div>
@@ -103,12 +126,12 @@ export default function AdminBookings() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">Tracking Code</th>
-                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">Customer</th>
-                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">Route</th>
-                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">Status</th>
-                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">Date</th>
-                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">Actions</th>
+                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('trackingCode')}</th>
+                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('customer')}</th>
+                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('route')}</th>
+                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('status')}</th>
+                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('date')}</th>
+                    <th className="text-left py-3 px-4 text-gray-700 font-semibold">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -137,14 +160,14 @@ export default function AdminBookings() {
                           <button 
                             onClick={() => openStatusModal(booking)}
                             className="p-2 text-green-600 hover:bg-green-50 rounded"
-                            title="Update Status"
+                            title={t('updateStatus')}
                           >
                             <FaEdit />
                           </button>
                           <button 
-                            onClick={() => deleteBooking(booking._id)}
+                            onClick={() => openDeleteConfirm(booking._id)}
                             className="p-2 text-red-600 hover:bg-red-50 rounded"
-                            title="Delete"
+                            title={t('delete')}
                           >
                             <FaTrash />
                           </button>
@@ -163,7 +186,7 @@ export default function AdminBookings() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg max-w-md w-full">
               <div className="p-6 border-b flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Update Booking Status</h2>
+                <h2 className="text-2xl font-bold">{t('updateStatus')}</h2>
                 <button onClick={() => setShowStatusModal(false)} className="text-gray-500 hover:text-gray-700">
                   <FaTimes size={24} />
                 </button>
@@ -171,47 +194,63 @@ export default function AdminBookings() {
               
               <div className="p-6 space-y-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Tracking Code</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('trackingCode')}</p>
                   <p className="font-semibold">{selectedBooking.trackingCode}</p>
                 </div>
                 
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Customer</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('customer')}</p>
                   <p className="font-semibold">{selectedBooking.customerInfo.name}</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">New Status *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('status')} *</label>
                   <select
                     required
                     className="input-field"
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value)}
                   >
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="in_transit">In Transit</option>
-                    <option value="out_for_delivery">Out for Delivery</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="pending">{t('pending')}</option>
+                    <option value="confirmed">{t('confirmed')}</option>
+                    <option value="in_transit">{t('inTransit')}</option>
+                    <option value="out_for_delivery">{t('outForDelivery')}</option>
+                    <option value="delivered">{t('delivered')}</option>
+                    <option value="cancelled">{t('cancelled')}</option>
                   </select>
                 </div>
 
                 <div className="flex gap-3 pt-4">
                   <button onClick={updateBookingStatus} className="flex-1 btn-primary">
-                    Update Status
+                    {t('updateStatus')}
                   </button>
                   <button 
                     onClick={() => setShowStatusModal(false)} 
                     className="flex-1 btn-secondary"
                   >
-                    Cancel
+                    {t('cancel')}
                   </button>
                 </div>
               </div>
             </div>
           </div>
         )}
+
+        {/* Delete Confirmation Dialog */}
+        <ConfirmDialog
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setBookingToDelete(null);
+          }}
+          onConfirm={deleteBooking}
+          title="Delete Booking"
+          message="Are you sure you want to delete this booking? This action cannot be undone and all associated data will be permanently removed."
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
+          isLoading={isDeleting}
+        />
       </div>
     </AdminLayout>
   );
